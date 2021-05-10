@@ -19,7 +19,9 @@ export class DrawComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.graph = new joint.dia.Graph();
+    this.graph = new joint.dia.Graph({}, {
+      cellNamespace: joint.shapes,
+    });
 
     this.paper = new joint.dia.Paper({
       el: '#canvas',
@@ -27,6 +29,7 @@ export class DrawComponent implements OnInit {
       width: '100%',
       height: window.innerHeight,
       gridSize: 1,
+      cellViewNamespace: joint.shapes,
     });
 
     this.rect = new joint.shapes.standard.Rectangle();
@@ -54,6 +57,11 @@ export class DrawComponent implements OnInit {
     this.link.target(this.rect2);
     this.link.addTo(this.graph);
 
+    // console.log(JSON.stringify(this.graph.toJSON()))
+
+    // var jsonStr = '{"cells":[{"type":"standard.Rectangle","position":{"x":100,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"00a7a266-8df0-4921-b6ea-7614c7433b45","z":1,"attrs":{"body":{"fill":"blue"},"label":{"fill":"white","text":"Hello"}}},{"type":"standard.Rectangle","position":{"x":500,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"2cb58c08-f5f6-4e32-aacb-2267ab8ce62b","z":1,"attrs":{"body":{"fill":"blue"},"label":{"fill":"white","text":"World!"}}},{"type":"standard.Link","source":{"id":"00a7a266-8df0-4921-b6ea-7614c7433b45"},"target":{"id":"2cb58c08-f5f6-4e32-aacb-2267ab8ce62b"},"id":"becdd7d1-c409-4bfd-9520-febf3308019e","z":2,"attrs":{}}]}';
+    // var json = JSON.parse(jsonStr)
+    // this.graph.fromJSON(json);
   }
 
 }
