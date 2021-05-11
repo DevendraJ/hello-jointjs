@@ -28,8 +28,12 @@ export class DrawComponent implements OnInit {
       model: this.graph,
       width: '100%',
       height: window.innerHeight,
-      gridSize: 1,
       cellViewNamespace: joint.shapes,
+      gridSize: 30,
+      drawGrid: true,
+      background: {
+        color: '#D1C9C8'
+      },
     });
 
     this.rect = new joint.shapes.standard.Rectangle();
@@ -37,7 +41,7 @@ export class DrawComponent implements OnInit {
     this.rect.resize(100, 40);
     this.rect.attr({
       body: {
-        fill: 'blue'
+        fill: '#F6A11B'
       },
       label: {
         text: 'Hello',
@@ -47,15 +51,51 @@ export class DrawComponent implements OnInit {
     this.rect.addTo(this.graph);
 
     this.rect2 = this.rect.clone() as joint.shapes.standard.Rectangle;
-    // rect2.translate(300, 0);
-    this.rect2.position(500, 30);
+    this.rect2.translate(600, 70);
+    // this.rect2.position(500, 30);
+    this.rect2.attr('body/fill', '#1CC1EF');
     this.rect2.attr('label/text', 'World!');
     this.rect2.addTo(this.graph);
 
     this.link = new joint.shapes.standard.Link();
     this.link.source(this.rect);
     this.link.target(this.rect2);
+    this.link.connector('smooth')
+    this.link.attr({
+      line: {
+        stroke: 'red',
+      }
+    });
+    this.link.appendLabel({
+      attrs: {
+        text: {
+          text: 'Label'
+        }
+      }
+    })
     this.link.addTo(this.graph);
+
+    this.paper.on({
+      'link:pointermove': function (elementView, evt, x, y) {
+        let coordinates = new joint.g.Point(x, y);
+        let link = (elementView.model as joint.shapes.standard.Link);
+        let source = link.source();
+        link.disconnect();
+        link.source(source);
+
+        let elementBelow = this.model.findModelsFromPoint(coordinates).find(function (el) {
+          return (el.id !== link.id);
+        });
+
+        if (elementBelow) {
+          link.target(elementBelow);
+        } else {
+          link.target(coordinates);
+        }
+
+      },
+
+    });
 
     // console.log(JSON.stringify(this.graph.toJSON()))
 
