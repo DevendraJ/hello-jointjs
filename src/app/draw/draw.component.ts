@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as joint from 'jointjs/dist/joint';
+import * as _ from 'underscore';
+import * as $ from 'jquery'
 
 @Component({
   selector: 'app-draw',
@@ -19,6 +21,60 @@ export class DrawComponent implements OnInit {
   }
 
   ngOnInit() {
+    joint.shapes['html'] = {};
+    joint.shapes['html'].Rect = joint.shapes.basic.Rect.extend({
+      defaults: joint.util.defaultsDeep({
+        type: 'html.Rect',
+        attrs: {
+          rect: { stroke: 'none', 'fill-opacity': 0 }
+        }
+      }, joint.shapes.basic.Rect.prototype.defaults)
+    });
+
+    joint.shapes['html'].RectView = joint.dia.ElementView.extend({
+      template: [
+        '<div class="html-element">',
+        'Html Rectangle',
+        '</div>'
+      ].join(''),
+      initialize: function () {
+        _.bindAll(this, 'updateBox');
+        joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+
+        this.$box = $(_.template(this.template)());
+        this.model.on('change', this.updateBox, this);
+        this.updateBox();
+      },
+      render: function () {
+        joint.dia.ElementView.prototype.render.apply(this, arguments);
+        this.paper.$el.prepend(this.$box);
+        this.updateBox();
+        return this;
+      },
+      updateBox: function () {
+        // Set the position and dimension of the box so that it covers the JointJS element.
+        var bbox = this.model.getBBox();
+        
+        this.$box.css({
+          width: bbox.width,
+          height: bbox.height,
+          left: bbox.x,
+          top: bbox.y,
+          transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)',
+          position: 'absolute',
+          background: '#C9D72B',
+          'pointer-events': 'none',
+          '-webkit-user-select': 'none',
+          'border-radius': '10px',
+          border: '2px solid rgb(0, 0, 0)',
+          padding: '5px',
+          'box-sizing': 'border-box',
+          'z-index': 2,
+        });
+      },
+
+    });
+
     this.graph = new joint.dia.Graph({}, {
       cellNamespace: joint.shapes,
     });
@@ -97,9 +153,21 @@ export class DrawComponent implements OnInit {
 
     });
 
+    var customShape = new joint.shapes['html'].Rect({
+      position: { x: 80, y: 80 },
+      size: { width: 170, height: 100 },
+    });
+    customShape.addTo(this.graph);
+
+    var link2 = new joint.shapes.standard.Link();
+    link2.source(this.rect);
+    link2.target(customShape);
+    link2.addTo(this.graph);
+    link2.connector('smooth');
+
     // console.log(JSON.stringify(this.graph.toJSON()))
 
-    // var jsonStr = '{"cells":[{"type":"standard.Rectangle","position":{"x":100,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"00a7a266-8df0-4921-b6ea-7614c7433b45","z":1,"attrs":{"body":{"fill":"blue"},"label":{"fill":"white","text":"Hello"}}},{"type":"standard.Rectangle","position":{"x":500,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"2cb58c08-f5f6-4e32-aacb-2267ab8ce62b","z":1,"attrs":{"body":{"fill":"blue"},"label":{"fill":"white","text":"World!"}}},{"type":"standard.Link","source":{"id":"00a7a266-8df0-4921-b6ea-7614c7433b45"},"target":{"id":"2cb58c08-f5f6-4e32-aacb-2267ab8ce62b"},"id":"becdd7d1-c409-4bfd-9520-febf3308019e","z":2,"attrs":{}}]}';
+    // var jsonStr = '{"cells":[{"type":"standard.Rectangle","position":{"x":100,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"76f6036c-362d-4cff-9980-fd31eb9da342","z":1,"attrs":{"body":{"fill":"#F6A11B"},"label":{"fill":"white","text":"Hello"}}},{"type":"standard.Rectangle","position":{"x":700,"y":100},"size":{"width":100,"height":40},"angle":0,"id":"66cb4310-5c4e-40c9-8f04-950217969856","z":1,"attrs":{"body":{"fill":"#1CC1EF"},"label":{"fill":"white","text":"World!"}}},{"type":"standard.Link","source":{"id":"76f6036c-362d-4cff-9980-fd31eb9da342"},"target":{"id":"66cb4310-5c4e-40c9-8f04-950217969856"},"id":"14cb0118-363b-4059-b0f5-a953a2b1cc6c","connector":{"name":"smooth"},"labels":[{"attrs":{"text":{"text":"Label"}}}],"z":2,"attrs":{"line":{"stroke":"red"}}},{"type":"html.Element","position":{"x":80,"y":80},"size":{"width":170,"height":100},"angle":0,"id":"1015f094-53d5-4c05-b74b-7e7dbf0989e5","z":3,"attrs":{}},{"type":"standard.Link","source":{"id":"76f6036c-362d-4cff-9980-fd31eb9da342"},"target":{"id":"1015f094-53d5-4c05-b74b-7e7dbf0989e5"},"id":"60336507-e5af-4ec2-8947-b165dcdf0c2a","z":4,"connector":{"name":"smooth"},"attrs":{}}]}';
     // var json = JSON.parse(jsonStr)
     // this.graph.fromJSON(json);
   }
