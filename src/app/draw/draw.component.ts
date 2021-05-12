@@ -33,7 +33,7 @@ export class DrawComponent implements OnInit {
 
     joint.shapes['html'].RectView = joint.dia.ElementView.extend({
       template: [
-        '<div class="html-element">',
+        '<div>',
         'Html Rectangle',
         '</div>'
       ].join(''),
@@ -54,7 +54,7 @@ export class DrawComponent implements OnInit {
       updateBox: function () {
         // Set the position and dimension of the box so that it covers the JointJS element.
         var bbox = this.model.getBBox();
-        
+
         this.$box.css({
           width: bbox.width,
           height: bbox.height,
@@ -70,6 +70,62 @@ export class DrawComponent implements OnInit {
           padding: '5px',
           'box-sizing': 'border-box',
           'z-index': 2,
+        });
+      },
+
+    });
+
+    joint.shapes['html'].Pacman = joint.shapes.basic.Circle.extend({
+      defaults: joint.util.defaultsDeep({
+        type: 'html.Pacman',
+        attrs: {
+          circle: { stroke: 'none', 'fill-opacity': 0.0 }
+        }
+      }, joint.shapes.basic.Circle.prototype.defaults)
+    });
+
+    joint.shapes['html'].PacmanView = joint.dia.ElementView.extend({
+      template: [
+        '<div>',
+        'Html Pacman',
+        '</div>'
+      ].join(''),
+      initialize: function () {
+        _.bindAll(this, 'updateBox');
+        joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+
+        this.$box = $(_.template(this.template)());
+        this.model.on('change', this.updateBox, this);
+        this.updateBox();
+      },
+      render: function () {
+        joint.dia.ElementView.prototype.render.apply(this, arguments);
+        this.paper.$el.prepend(this.$box);
+        this.updateBox();
+        return this;
+      },
+      updateBox: function () {
+        // Set the position and dimension of the box so that it covers the JointJS element.
+        var bbox = this.model.getBBox();
+
+        this.$box.css({
+          width: '0px',
+          height: '0px',
+          left: bbox.x,
+          top: bbox.y,
+          transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)',
+          position: 'absolute',
+          'z-index': 3,
+          'pointer-events': 'none',
+          '-webkit-user-select': 'none',
+          'border-right': '50px solid transparent',
+          'border-top': '50px solid #F56A45',
+          'border-left': '50px solid #F56A45',
+          'border-bottom': '50px solid #F56A45',
+          'border-top-left-radius': '50px',
+          'border-top-right-radius': '50px',
+          'border-bottom-left-radius': '50px',
+          'border-bottom-right-radius': '50px',
         });
       },
 
@@ -153,17 +209,30 @@ export class DrawComponent implements OnInit {
 
     });
 
-    var customShape = new joint.shapes['html'].Rect({
-      position: { x: 80, y: 80 },
+    var htmlRect = new joint.shapes['html'].Rect({
+      position: { x: 80, y: 180 },
       size: { width: 170, height: 100 },
     });
-    customShape.addTo(this.graph);
+    htmlRect.addTo(this.graph);
 
     var link2 = new joint.shapes.standard.Link();
+    link2.attr('line/stroke', '#1C3294');
     link2.source(this.rect);
-    link2.target(customShape);
+    link2.target(htmlRect);
     link2.addTo(this.graph);
     link2.connector('smooth');
+
+    var htmlPacman = new joint.shapes['html'].Pacman({
+      position: { x: 500, y: 180 },
+      size: { width: 60, height: 60 },
+    });
+    htmlPacman.addTo(this.graph);
+
+    var link3 = new joint.shapes.standard.Link();
+    link3.source(this.rect);
+    link3.target(htmlPacman);
+    link3.addTo(this.graph);
+    link3.connector('smooth');
 
     // console.log(JSON.stringify(this.graph.toJSON()))
 
