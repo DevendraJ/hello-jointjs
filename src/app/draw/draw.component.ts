@@ -43,6 +43,7 @@ export class DrawComponent implements OnInit {
 
         this.$box = $(_.template(this.template)());
         this.model.on('change', this.updateBox, this);
+        this.model.on('remove', this.removeBox, this);
         this.updateBox();
       },
       render: function () {
@@ -58,8 +59,8 @@ export class DrawComponent implements OnInit {
         this.$box.css({
           width: bbox.width,
           height: bbox.height,
-          left: bbox.x,
-          top: bbox.y,
+          left: bbox.x + 8,
+          top: bbox.y + 8,
           transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)',
           position: 'absolute',
           background: '#C9D72B',
@@ -71,6 +72,9 @@ export class DrawComponent implements OnInit {
           'box-sizing': 'border-box',
           'z-index': 2,
         });
+      },
+      removeBox: function () {
+        this.$box.remove();
       },
 
     });
@@ -86,8 +90,9 @@ export class DrawComponent implements OnInit {
 
     joint.shapes['html'].PacmanView = joint.dia.ElementView.extend({
       template: [
-        '<div>',
-        'Html Pacman',
+        '<div class="outline">',
+        '<div class="pacman">',
+        '</div>',
         '</div>'
       ].join(''),
       initialize: function () {
@@ -96,6 +101,7 @@ export class DrawComponent implements OnInit {
 
         this.$box = $(_.template(this.template)());
         this.model.on('change', this.updateBox, this);
+        this.model.on('remove', this.removeBox, this);
         this.updateBox();
       },
       render: function () {
@@ -109,24 +115,38 @@ export class DrawComponent implements OnInit {
         var bbox = this.model.getBBox();
 
         this.$box.css({
-          width: '0px',
-          height: '0px',
-          left: bbox.x,
-          top: bbox.y,
+          width: bbox.width,
+          height: bbox.height,
+          left: bbox.x + 7,
+          top: bbox.y + 7,
           transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)',
           position: 'absolute',
           'z-index': 3,
           'pointer-events': 'none',
           '-webkit-user-select': 'none',
+          border: '2px solid black',
+          'border-radius': '8px',
+          display: 'flex',
+          'align-items': 'center',
+          'justify-content': 'center',
+          background: '#a9ff00e0',
+        });
+
+        this.$box.find('.pacman').css({
+          width: '0px',
+          height: '0px',
           'border-right': '50px solid transparent',
-          'border-top': '50px solid #F56A45',
-          'border-left': '50px solid #F56A45',
-          'border-bottom': '50px solid #F56A45',
+          'border-top': '50px solid red',
+          'border-left': '50px solid red',
+          'border-bottom': '50px solid red',
           'border-top-left-radius': '50px',
           'border-top-right-radius': '50px',
           'border-bottom-left-radius': '50px',
           'border-bottom-right-radius': '50px',
         });
+      },
+      removeBox: function () {
+        this.$box.remove();
       },
 
     });
@@ -166,8 +186,8 @@ export class DrawComponent implements OnInit {
           link.target(coordinates);
         }
       },
-      
-      'element:mouseover': function (elementView: joint.dia.CellView) {
+
+      'element:pointerclick': function (elementView: joint.dia.CellView) {
         let elementToolsView = new joint.dia.ToolsView({
           tools: [
             new joint.elementTools.Boundary(),
@@ -176,9 +196,9 @@ export class DrawComponent implements OnInit {
         });
         elementView.addTools(elementToolsView);
       },
-      
-      'element:mouseout': function (elementView: joint.dia.CellView) {
-        elementView.removeTools();
+
+      'blank:pointerclick': function (elementView: joint.dia.CellView) {
+        this.removeTools();
       },
 
     });
@@ -238,7 +258,7 @@ export class DrawComponent implements OnInit {
 
     var htmlPacman = new joint.shapes['html'].Pacman({
       position: { x: 500, y: 180 },
-      size: { width: 60, height: 60 },
+      size: { width: 110, height: 110 },
     });
     htmlPacman.addTo(this.graph);
 
