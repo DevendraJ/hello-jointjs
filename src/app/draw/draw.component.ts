@@ -242,6 +242,15 @@ export class DrawComponent implements OnInit {
         elementView.addTools(elementToolsView);
       },
 
+      'link:pointerclick': function (linkView: joint.dia.LinkView) {
+        let linkToolsView = new joint.dia.ToolsView({
+          tools: [
+            new joint.linkTools.Remove(),
+          ]
+        });
+        linkView.addTools(linkToolsView);
+      },
+
       'blank:pointerclick': function (elementView: joint.dia.CellView) {
         this.removeTools();
       },
