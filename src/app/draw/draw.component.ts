@@ -148,6 +148,41 @@ export class DrawComponent implements OnInit {
       },
     });
 
+    this.paper.on({
+      'link:pointermove': function (elementView, evt, x, y) {
+        let coordinates = new joint.g.Point(x, y);
+        let link = (elementView.model as joint.shapes.standard.Link);
+        let source = link.source();
+        link.disconnect();
+        link.source(source);
+
+        let elementBelow = this.model.findModelsFromPoint(coordinates).find(function (el) {
+          return (el.id !== link.id);
+        });
+
+        if (elementBelow) {
+          link.target(elementBelow);
+        } else {
+          link.target(coordinates);
+        }
+      },
+      
+      'element:mouseover': function (elementView: joint.dia.CellView) {
+        let elementToolsView = new joint.dia.ToolsView({
+          tools: [
+            new joint.elementTools.Boundary(),
+            new joint.elementTools.Remove(),
+          ],
+        });
+        elementView.addTools(elementToolsView);
+      },
+      
+      'element:mouseout': function (elementView: joint.dia.CellView) {
+        elementView.removeTools();
+      },
+
+    });
+
     this.rect = new joint.shapes.standard.Rectangle();
     this.rect.position(100, 30);
     this.rect.resize(100, 40);
@@ -162,7 +197,8 @@ export class DrawComponent implements OnInit {
     });
     this.rect.addTo(this.graph);
 
-    this.rect2 = this.rect.clone() as joint.shapes.standard.Rectangle;
+    this.rect2 = new joint.shapes.standard.Rectangle();
+    this.rect2.resize(100, 40);
     this.rect2.translate(600, 70);
     // this.rect2.position(500, 30);
     this.rect2.attr('body/fill', '#1CC1EF');
@@ -186,28 +222,6 @@ export class DrawComponent implements OnInit {
       }
     })
     this.link.addTo(this.graph);
-
-    this.paper.on({
-      'link:pointermove': function (elementView, evt, x, y) {
-        let coordinates = new joint.g.Point(x, y);
-        let link = (elementView.model as joint.shapes.standard.Link);
-        let source = link.source();
-        link.disconnect();
-        link.source(source);
-
-        let elementBelow = this.model.findModelsFromPoint(coordinates).find(function (el) {
-          return (el.id !== link.id);
-        });
-
-        if (elementBelow) {
-          link.target(elementBelow);
-        } else {
-          link.target(coordinates);
-        }
-
-      },
-
-    });
 
     var htmlRect = new joint.shapes['html'].Rect({
       position: { x: 80, y: 180 },
