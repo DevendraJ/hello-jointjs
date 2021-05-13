@@ -54,7 +54,7 @@ export class DrawComponent implements OnInit {
       },
       updateBox: function () {
         // Set the position and dimension of the box so that it covers the JointJS element.
-        var bbox = this.model.getBBox();
+        let bbox = this.model.getBBox();
 
         this.$box.css({
           width: bbox.width,
@@ -112,7 +112,7 @@ export class DrawComponent implements OnInit {
       },
       updateBox: function () {
         // Set the position and dimension of the box so that it covers the JointJS element.
-        var bbox = this.model.getBBox();
+        let bbox = this.model.getBBox();
 
         this.$box.css({
           width: bbox.width,
@@ -204,7 +204,7 @@ export class DrawComponent implements OnInit {
       width: '100%',
       height: window.innerHeight,
       cellViewNamespace: joint.shapes,
-      gridSize: 30,
+      gridSize: 10,
       drawGrid: true,
       background: {
         color: '#D1C9C8'
@@ -288,26 +288,26 @@ export class DrawComponent implements OnInit {
     })
     this.link.addTo(this.graph);
 
-    var htmlRect = new joint.shapes['html'].Rect({
+    let htmlRect = new joint.shapes['html'].Rect({
       position: { x: 80, y: 180 },
       size: { width: 170, height: 100 },
     });
     htmlRect.addTo(this.graph);
 
-    var link2 = new joint.shapes.standard.Link();
+    let link2 = new joint.shapes.standard.Link();
     link2.attr('line/stroke', '#1C3294');
     link2.source(this.rect);
     link2.target(htmlRect);
     link2.addTo(this.graph);
     link2.connector('smooth');
 
-    var htmlPacman = new joint.shapes['html'].Pacman({
+    let htmlPacman = new joint.shapes['html'].Pacman({
       position: { x: 500, y: 180 },
       size: { width: 110, height: 110 },
     });
     htmlPacman.addTo(this.graph);
 
-    var link3 = new joint.shapes.standard.Link();
+    let link3 = new joint.shapes.standard.Link();
     link3.source(this.rect);
     link3.target(htmlPacman);
     link3.addTo(this.graph);
@@ -315,8 +315,8 @@ export class DrawComponent implements OnInit {
 
     // console.log(JSON.stringify(this.graph.toJSON()))
 
-    // var jsonStr = '{"cells":[{"type":"standard.Rectangle","position":{"x":100,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"76f6036c-362d-4cff-9980-fd31eb9da342","z":1,"attrs":{"body":{"fill":"#F6A11B"},"label":{"fill":"white","text":"Hello"}}},{"type":"standard.Rectangle","position":{"x":700,"y":100},"size":{"width":100,"height":40},"angle":0,"id":"66cb4310-5c4e-40c9-8f04-950217969856","z":1,"attrs":{"body":{"fill":"#1CC1EF"},"label":{"fill":"white","text":"World!"}}},{"type":"standard.Link","source":{"id":"76f6036c-362d-4cff-9980-fd31eb9da342"},"target":{"id":"66cb4310-5c4e-40c9-8f04-950217969856"},"id":"14cb0118-363b-4059-b0f5-a953a2b1cc6c","connector":{"name":"smooth"},"labels":[{"attrs":{"text":{"text":"Label"}}}],"z":2,"attrs":{"line":{"stroke":"red"}}},{"type":"html.Element","position":{"x":80,"y":80},"size":{"width":170,"height":100},"angle":0,"id":"1015f094-53d5-4c05-b74b-7e7dbf0989e5","z":3,"attrs":{}},{"type":"standard.Link","source":{"id":"76f6036c-362d-4cff-9980-fd31eb9da342"},"target":{"id":"1015f094-53d5-4c05-b74b-7e7dbf0989e5"},"id":"60336507-e5af-4ec2-8947-b165dcdf0c2a","z":4,"connector":{"name":"smooth"},"attrs":{}}]}';
-    // var json = JSON.parse(jsonStr)
+    // let jsonStr = '{"cells":[{"type":"standard.Rectangle","position":{"x":100,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"76f6036c-362d-4cff-9980-fd31eb9da342","z":1,"attrs":{"body":{"fill":"#F6A11B"},"label":{"fill":"white","text":"Hello"}}},{"type":"standard.Rectangle","position":{"x":700,"y":100},"size":{"width":100,"height":40},"angle":0,"id":"66cb4310-5c4e-40c9-8f04-950217969856","z":1,"attrs":{"body":{"fill":"#1CC1EF"},"label":{"fill":"white","text":"World!"}}},{"type":"standard.Link","source":{"id":"76f6036c-362d-4cff-9980-fd31eb9da342"},"target":{"id":"66cb4310-5c4e-40c9-8f04-950217969856"},"id":"14cb0118-363b-4059-b0f5-a953a2b1cc6c","connector":{"name":"smooth"},"labels":[{"attrs":{"text":{"text":"Label"}}}],"z":2,"attrs":{"line":{"stroke":"red"}}},{"type":"html.Element","position":{"x":80,"y":80},"size":{"width":170,"height":100},"angle":0,"id":"1015f094-53d5-4c05-b74b-7e7dbf0989e5","z":3,"attrs":{}},{"type":"standard.Link","source":{"id":"76f6036c-362d-4cff-9980-fd31eb9da342"},"target":{"id":"1015f094-53d5-4c05-b74b-7e7dbf0989e5"},"id":"60336507-e5af-4ec2-8947-b165dcdf0c2a","z":4,"connector":{"name":"smooth"},"attrs":{}}]}';
+    // let json = JSON.parse(jsonStr)
     // this.graph.fromJSON(json);
   }
 
