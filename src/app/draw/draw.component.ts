@@ -151,6 +151,49 @@ export class DrawComponent implements OnInit {
 
     });
 
+    joint.elementTools['LinkButton'] = joint.elementTools.Button.extend({
+      name: 'link-button',
+      options: {
+        markup: [{
+          tagName: 'circle',
+          selector: 'button',
+          attributes: {
+            'r': 7,
+            'fill': '#001DFF',
+            'cursor': 'pointer'
+          }
+        }, {
+          tagName: 'path',
+          selector: 'icon',
+          attributes: {
+            'd': 'M -2 4 2 4 M 0 3 0 0 M -2 -1 1 -1 M -1 -4 1 -4',
+            'fill': 'none',
+            'stroke': '#FFFFFF',
+            'stroke-width': 2,
+            'pointer-events': 'none'
+          }
+        }],
+        x: '100%',
+        y: '100%',
+        offset: {
+          x: 0,
+          y: 0
+        },
+        rotate: true,
+        action: function (evt) {
+          // alert('View id: ' + this.id + '\n' + 'Model id: ' + this.model.id);
+          let newLink = new joint.shapes.standard.Link();
+          newLink.source(this.model);
+          newLink.connector('smooth');
+          let graph = this.paper.model as joint.dia.Graph;
+          let element = this.model as joint.dia.Element
+          let position = element.attributes.position as joint.g.Point;
+          newLink.target(new joint.g.Point(position.x - 30, position.y + 40));
+          newLink.addTo(graph);
+        }
+      }
+    });
+
     this.graph = new joint.dia.Graph({}, {
       cellNamespace: joint.shapes,
     });
@@ -188,10 +231,12 @@ export class DrawComponent implements OnInit {
       },
 
       'element:pointerclick': function (elementView: joint.dia.CellView) {
+        this.removeTools();
         let elementToolsView = new joint.dia.ToolsView({
           tools: [
             new joint.elementTools.Boundary(),
             new joint.elementTools.Remove(),
+            new joint.elementTools['LinkButton'](),
           ],
         });
         elementView.addTools(elementToolsView);
