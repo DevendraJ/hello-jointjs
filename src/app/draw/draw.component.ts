@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import * as joint from 'jointjs/dist/joint';
 import * as _ from 'underscore';
 import * as $ from 'jquery'
@@ -8,8 +8,9 @@ import * as $ from 'jquery'
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.css']
 })
-export class DrawComponent implements OnInit {
+export class DrawComponent implements AfterViewInit {
 
+  private showProps: Boolean = true;
   private graph: joint.dia.Graph;
   private paper: joint.dia.Paper;
   private rect: joint.shapes.standard.Rectangle;
@@ -20,7 +21,7 @@ export class DrawComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     joint.shapes['html'] = {};
     joint.shapes['html'].Rect = joint.shapes.basic.Rect.extend({
       defaults: joint.util.defaultsDeep({
