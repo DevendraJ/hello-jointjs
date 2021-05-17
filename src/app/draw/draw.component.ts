@@ -38,9 +38,7 @@ export class DrawComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.registerDOMListeners();
-
+  customizeJoint() {
     joint.shapes['html'] = {};
     joint.shapes['html'].Rect = joint.shapes.basic.Rect.extend({
       defaults: joint.util.defaultsDeep({
@@ -230,7 +228,9 @@ export class DrawComponent implements AfterViewInit {
         color: '#D1C9C8'
       },
     });
+  }
 
+  registerPaperEvents() {
     this.paper.on({
       'link:pointermove': function (elementView, evt, x, y) {
         let coordinates = new joint.g.Point(x, y);
@@ -276,6 +276,12 @@ export class DrawComponent implements AfterViewInit {
       },
 
     });
+  }
+
+  ngAfterViewInit() {
+    this.registerDOMListeners();
+    this.customizeJoint();
+    this.registerPaperEvents();
 
     this.rect = new joint.shapes.standard.Rectangle();
     this.rect.position(100, 30);
