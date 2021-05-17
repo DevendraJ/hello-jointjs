@@ -1,6 +1,6 @@
 <div style="width: 100%; overflow: hidden; display:flex;">
-    <div id="canvas" style="height: 100%; width: 600px;"></div>
+    <div #canvas id="canvas" style="height: 100%; width: 600px;"></div>
     <div style="flex-grow: 1;">
-        <app-properties-panel *ngIf="showProps"></app-properties-panel>
+        <app-properties-panel *ngIf="showProps" [inputElement]='selectedElement'></app-properties-panel>
     </div>
 </div>

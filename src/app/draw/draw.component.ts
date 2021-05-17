@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Renderer2 } from '@angular/core';
 import * as joint from 'jointjs/dist/joint';
 import * as _ from 'underscore';
 import * as $ from 'jquery'
@@ -10,18 +10,37 @@ import * as $ from 'jquery'
 })
 export class DrawComponent implements AfterViewInit {
 
-  private showProps: Boolean = true;
+  private showProps: Boolean = false;
+  private selectedElement: joint.dia.Element = null;
   private graph: joint.dia.Graph;
   private paper: joint.dia.Paper;
   private rect: joint.shapes.standard.Rectangle;
   private rect2: joint.shapes.standard.Rectangle;
   private link: joint.shapes.standard.Link;
 
-  constructor() {
+  constructor(private renderer: Renderer2) {
 
   }
 
+  registerDOMListeners() {
+    this.renderer.listen(document.getElementById('canvas'), 'contextmenu', (event) => {
+      let position = new joint.g.Point(event.clientX, event.clientY);
+      let elements: joint.dia.Element[] = this.graph.findModelsFromPoint(position);
+      let size = elements.length
+      if (size > 0) {
+        this.selectedElement = elements[size - 1];
+        this.showProps = true;
+      }
+    });
+
+    this.renderer.listen(document.getElementById('canvas'), 'click', (event) => {
+      this.showProps = false;
+    });
+  }
+
   ngAfterViewInit() {
+    this.registerDOMListeners();
+
     joint.shapes['html'] = {};
     joint.shapes['html'].Rect = joint.shapes.basic.Rect.extend({
       defaults: joint.util.defaultsDeep({
@@ -35,7 +54,7 @@ export class DrawComponent implements AfterViewInit {
     joint.shapes['html'].RectView = joint.dia.ElementView.extend({
       template: [
         '<div>',
-        'Html Rectangle',
+        '<p></p>',
         '</div>'
       ].join(''),
       initialize: function () {
@@ -56,7 +75,7 @@ export class DrawComponent implements AfterViewInit {
       updateBox: function () {
         // Set the position and dimension of the box so that it covers the JointJS element.
         let bbox = this.model.getBBox();
-
+        this.$box.find('p').text(this.model.attributes.attrs.label.text);
         this.$box.css({
           width: bbox.width,
           height: bbox.height,
@@ -302,6 +321,7 @@ export class DrawComponent implements AfterViewInit {
       position: { x: 80, y: 180 },
       size: { width: 170, height: 100 },
     });
+    htmlRect.attr('label/text', 'Html Rectangle');
     htmlRect.addTo(this.graph);
 
     let link2 = new joint.shapes.standard.Link();
