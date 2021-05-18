@@ -4,10 +4,7 @@
 }
 
 .palette {
-  height: 300px;
-  width: 120px;
   z-index: 9999;
-  position: absolute;
   border: 1px solid #dcdcdc;
   background-color: #f8f8f8 !important;
   box-shadow: 3px 3px #d8d8d8;
@@ -15,4 +12,10 @@
   left: 15px;
   opacity: 1;
   top: 15px;
+}
+
+.palette {
+  height: 300px;
+  width: 120px;
+  position: absolute;
 }

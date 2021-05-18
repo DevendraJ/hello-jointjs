@@ -1,8 +1,26 @@
-<div class="properties-panel">
-    <p>Properties Panel</p>
-    <input type="text" [(ngModel)]="labelText" (input)="updateModel()" placeholder="Label" />
-    <br>
-    <input type="text" [(ngModel)]="stroke" (input)="updateModel()" placeholder='Stroke Colour e.g #FFFFFF' />
-    <br>
-    <input type="text" [(ngModel)]="fill" (input)="updateModel()" placeholder='Fill Colour e.g #FFFFFF' />
-</div>
+<form class="properties-panel" [formGroup]="panelProperyForm">
+  <p>Properties Panel</p>
+  <input
+    type="text"
+    formControlName="label"
+    (input)="updateModel()"
+    placeholder="Label"
+    class="form-control"
+  />
+  <br />
+  <input
+    type="text"
+    formControlName="stroke"
+    (input)="updateModel()"
+    placeholder="Stroke Colour e.g #FFFFFF"
+    class="form-control"
+  />
+  <br />
+  <input
+    type="text"
+    formControlName="fill"
+    (input)="updateModel()"
+    placeholder="Fill Colour e.g #FFFFFF"
+    class="form-control"
+  />
+</form>
