@@ -30,7 +30,6 @@ export class DrawComponent implements AfterViewInit {
       let { top, left } = $('#canvas').offset();
       let position = new joint.g.Point(event.clientX - left, event.clientY - top);
       let elements: joint.dia.Element[] = this.graph.findModelsFromPoint(position);
-      console.log(elements)
       let size = elements.length
       if (size > 0) {
         this.selectedElement = elements[size - 1];

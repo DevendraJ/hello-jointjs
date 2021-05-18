@@ -10,21 +10,32 @@ export class PropertiesPanelComponent implements OnInit {
   @Input()
   private inputElement: joint.dia.Element;
 
-  private labelText;
+  private labelText: string;
+  private fill: string;
+  private stroke: string;
 
   constructor() { }
 
   ngOnInit() {
+    this.initProps();
+  }
+
+  initProps() {
     let labelAttr = this.inputElement.attributes.attrs['label'];
     if (labelAttr && labelAttr['text']) {
       this.labelText = labelAttr['text'];
     } else {
       this.labelText = '';
     }
+
+    this.stroke = this.inputElement.attributes.attrs.body.stroke;
+    this.fill = this.inputElement.attributes.attrs.body.fill;
   }
 
-  updateModel(val) {
-    this.inputElement.attr('label/text', val);
+  updateModel() {
+    this.inputElement.attr('label/text', this.labelText);
+    this.inputElement.attr('body/stroke', this.stroke);
+    this.inputElement.attr('body/fill', this.fill);
   }
 
 }
