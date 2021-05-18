@@ -1,16 +1,15 @@
-import { Component, AfterViewInit, Renderer2 } from '@angular/core';
-import * as joint from 'jointjs/dist/joint';
-import * as _ from 'underscore';
-import * as $ from 'jquery'
+import { Component, AfterViewInit, Renderer2 } from "@angular/core";
+import * as joint from "jointjs/dist/joint";
+import * as _ from "underscore";
+import * as $ from "jquery";
 
 @Component({
-  selector: 'app-draw',
-  templateUrl: './draw.component.html',
-  styleUrls: ['./draw.component.css']
+  selector: "app-draw",
+  templateUrl: "./draw.component.html",
+  styleUrls: ["./draw.component.css"],
 })
 export class DrawComponent implements AfterViewInit {
-
-  private showProps: Boolean = false;
+  public showProps: Boolean = false;
   private selectedElement: joint.dia.Element = null;
   private graph: joint.dia.Graph;
   private paper: joint.dia.Paper;
@@ -18,54 +17,102 @@ export class DrawComponent implements AfterViewInit {
   private rect2: joint.shapes.standard.Rectangle;
   private link: joint.shapes.standard.Link;
 
+  private xAxis: number = 15;
+  private yAxis: number = 15;
+
   private paletteGraph: joint.dia.Graph;
   private palettePaper: joint.dia.Paper;
 
-  constructor(private renderer: Renderer2) {
+  private flowchartItems = {
+    columns: 3,
+    shapes: {
+      // general: ["rectangle", "circle", "ellipse"],
+      general: [
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+        "circle",
+      ],
+    },
+  };
 
-  }
+  constructor(private renderer: Renderer2) {}
 
   registerDOMListeners() {
-    this.renderer.listen(document.getElementById('canvas'), 'contextmenu', (event) => {
-      let { top, left } = $('#canvas').offset();
-      let position = new joint.g.Point(event.clientX - left, event.clientY - top);
-      let elements: joint.dia.Element[] = this.graph.findModelsFromPoint(position);
-      let size = elements.length
-      if (size > 0) {
-        this.selectedElement = elements[size - 1];
-        this.showProps = true;
+    this.renderer.listen(
+      document.getElementById("canvas"),
+      "contextmenu",
+      (event) => {
+        let { top, left } = $("#canvas").offset();
+        let position = new joint.g.Point(
+          event.clientX - left,
+          event.clientY - top
+        );
+        let elements: joint.dia.Element[] =
+          this.graph.findModelsFromPoint(position);
+        let size = elements.length;
+        if (size > 0) {
+          this.selectedElement = elements[size - 1];
+          this.showProps = true;
+        }
       }
-    });
+    );
 
-    this.renderer.listen(document.getElementById('canvas'), 'click', (event) => {
-      this.showProps = false;
-    });
+    this.renderer.listen(
+      document.getElementById("canvas"),
+      "click",
+      (event) => {
+        this.showProps = false;
+      }
+    );
   }
 
   customizeJoint() {
-    joint.shapes['html'] = {};
-    joint.shapes['html'].Rect = joint.shapes.basic.Rect.extend({
-      defaults: joint.util.defaultsDeep({
-        type: 'html.Rect',
-        attrs: {
-          rect: { stroke: 'none', 'fill-opacity': 0 }
-        }
-      }, joint.shapes.basic.Rect.prototype.defaults)
+    joint.shapes["html"] = {};
+    joint.shapes["html"].Rect = joint.shapes.basic.Rect.extend({
+      defaults: joint.util.defaultsDeep(
+        {
+          type: "html.Rect",
+          attrs: {
+            rect: { stroke: "none", "fill-opacity": 0 },
+          },
+        },
+        joint.shapes.basic.Rect.prototype.defaults
+      ),
     });
 
-    joint.shapes['html'].RectView = joint.dia.ElementView.extend({
-      template: [
-        '<div>',
-        '<p></p>',
-        '</div>'
-      ].join(''),
+    joint.shapes["html"].RectView = joint.dia.ElementView.extend({
+      template: ["<div>", "<p></p>", "</div>"].join(""),
       initialize: function () {
-        _.bindAll(this, 'updateBox');
+        _.bindAll(this, "updateBox");
         joint.dia.ElementView.prototype.initialize.apply(this, arguments);
 
         this.$box = $(_.template(this.template)());
-        this.model.on('change', this.updateBox, this);
-        this.model.on('remove', this.removeBox, this);
+        this.model.on("change", this.updateBox, this);
+        this.model.on("remove", this.removeBox, this);
         this.updateBox();
       },
       render: function () {
@@ -77,54 +124,56 @@ export class DrawComponent implements AfterViewInit {
       updateBox: function () {
         // Set the position and dimension of the box so that it covers the JointJS element.
         let bbox = this.model.getBBox();
-        this.$box.find('p').text(this.model.attributes.attrs.label.text);
-        let { left, top } = $('#canvas').offset();
+        this.$box.find("p").text(this.model.attributes.attrs.label.text);
+        let { left, top } = $("#canvas").offset();
         this.$box.css({
           width: bbox.width,
           height: bbox.height,
           left: left + bbox.x,
           top: top + bbox.y,
-          transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)',
-          position: 'absolute',
-          background: '#C9D72B',
-          'pointer-events': 'none',
-          '-webkit-user-select': 'none',
-          'border-radius': '10px',
-          border: '2px solid rgb(0, 0, 0)',
-          padding: '5px',
-          'box-sizing': 'border-box',
-          'z-index': 2,
+          transform: "rotate(" + (this.model.get("angle") || 0) + "deg)",
+          position: "absolute",
+          background: "#C9D72B",
+          "pointer-events": "none",
+          "-webkit-user-select": "none",
+          "border-radius": "10px",
+          border: "2px solid rgb(0, 0, 0)",
+          padding: "5px",
+          "box-sizing": "border-box",
+          "z-index": 2,
         });
       },
       removeBox: function () {
         this.$box.remove();
       },
-
     });
 
-    joint.shapes['html'].Pacman = joint.shapes.basic.Circle.extend({
-      defaults: joint.util.defaultsDeep({
-        type: 'html.Pacman',
-        attrs: {
-          circle: { stroke: 'none', 'fill-opacity': 0.0 }
-        }
-      }, joint.shapes.basic.Circle.prototype.defaults)
+    joint.shapes["html"].Pacman = joint.shapes.basic.Circle.extend({
+      defaults: joint.util.defaultsDeep(
+        {
+          type: "html.Pacman",
+          attrs: {
+            circle: { stroke: "none", "fill-opacity": 0.0 },
+          },
+        },
+        joint.shapes.basic.Circle.prototype.defaults
+      ),
     });
 
-    joint.shapes['html'].PacmanView = joint.dia.ElementView.extend({
+    joint.shapes["html"].PacmanView = joint.dia.ElementView.extend({
       template: [
         '<div class="outline">',
         '<div class="pacman">',
-        '</div>',
-        '</div>'
-      ].join(''),
+        "</div>",
+        "</div>",
+      ].join(""),
       initialize: function () {
-        _.bindAll(this, 'updateBox');
+        _.bindAll(this, "updateBox");
         joint.dia.ElementView.prototype.initialize.apply(this, arguments);
 
         this.$box = $(_.template(this.template)());
-        this.model.on('change', this.updateBox, this);
-        this.model.on('remove', this.removeBox, this);
+        this.model.on("change", this.updateBox, this);
+        this.model.on("remove", this.removeBox, this);
         this.updateBox();
       },
       render: function () {
@@ -136,101 +185,104 @@ export class DrawComponent implements AfterViewInit {
       updateBox: function () {
         // Set the position and dimension of the box so that it covers the JointJS element.
         let bbox = this.model.getBBox();
-        let { left, top } = $('#canvas').offset();
+        let { left, top } = $("#canvas").offset();
         this.$box.css({
           width: bbox.width,
           height: bbox.height,
           left: bbox.x + left,
           top: bbox.y + top,
-          transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)',
-          position: 'absolute',
+          transform: "rotate(" + (this.model.get("angle") || 0) + "deg)",
+          position: "absolute",
           // 'z-index': 3,
-          'pointer-events': 'none',
-          '-webkit-user-select': 'none',
-          border: '2px solid black',
-          'border-radius': '8px',
-          display: 'flex',
-          'align-items': 'center',
-          'justify-content': 'center',
-          background: '#a9ff00e0',
+          "pointer-events": "none",
+          "-webkit-user-select": "none",
+          border: "2px solid black",
+          "border-radius": "8px",
+          display: "flex",
+          "align-items": "center",
+          "justify-content": "center",
+          background: "#a9ff00e0",
         });
 
-        this.$box.find('.pacman').css({
-          width: '0px',
-          height: '0px',
-          'border-right': '50px solid transparent',
-          'border-top': '50px solid red',
-          'border-left': '50px solid red',
-          'border-bottom': '50px solid red',
-          'border-top-left-radius': '50px',
-          'border-top-right-radius': '50px',
-          'border-bottom-left-radius': '50px',
-          'border-bottom-right-radius': '50px',
+        this.$box.find(".pacman").css({
+          width: "0px",
+          height: "0px",
+          "border-right": "50px solid transparent",
+          "border-top": "50px solid red",
+          "border-left": "50px solid red",
+          "border-bottom": "50px solid red",
+          "border-top-left-radius": "50px",
+          "border-top-right-radius": "50px",
+          "border-bottom-left-radius": "50px",
+          "border-bottom-right-radius": "50px",
         });
       },
       removeBox: function () {
         this.$box.remove();
       },
-
     });
 
-    joint.elementTools['LinkButton'] = joint.elementTools.Button.extend({
-      name: 'link-button',
+    joint.elementTools["LinkButton"] = joint.elementTools.Button.extend({
+      name: "link-button",
       options: {
-        markup: [{
-          tagName: 'circle',
-          selector: 'button',
-          attributes: {
-            'r': 7,
-            'fill': '#001DFF',
-            'cursor': 'pointer'
-          }
-        }, {
-          tagName: 'path',
-          selector: 'icon',
-          attributes: {
-            'd': 'M -2 4 2 4 M 0 3 0 0 M -2 -1 1 -1 M -1 -4 1 -4',
-            'fill': 'none',
-            'stroke': '#FFFFFF',
-            'stroke-width': 2,
-            'pointer-events': 'none'
-          }
-        }],
-        x: '100%',
-        y: '100%',
+        markup: [
+          {
+            tagName: "circle",
+            selector: "button",
+            attributes: {
+              r: 7,
+              fill: "#001DFF",
+              cursor: "pointer",
+            },
+          },
+          {
+            tagName: "path",
+            selector: "icon",
+            attributes: {
+              d: "M -2 4 2 4 M 0 3 0 0 M -2 -1 1 -1 M -1 -4 1 -4",
+              fill: "none",
+              stroke: "#FFFFFF",
+              "stroke-width": 2,
+              "pointer-events": "none",
+            },
+          },
+        ],
+        x: "100%",
+        y: "100%",
         offset: {
           x: 0,
-          y: 0
+          y: 0,
         },
         rotate: true,
         action: function (evt) {
           // alert('View id: ' + this.id + '\n' + 'Model id: ' + this.model.id);
           let newLink = new joint.shapes.standard.Link();
           newLink.source(this.model);
-          newLink.connector('smooth');
+          newLink.connector("smooth");
           let graph = this.paper.model as joint.dia.Graph;
-          let element = this.model as joint.dia.Element
+          let element = this.model as joint.dia.Element;
           let position = element.attributes.position as joint.g.Point;
           newLink.target(new joint.g.Point(position.x - 30, position.y + 40));
           newLink.addTo(graph);
-        }
-      }
+        },
+      },
     });
-
   }
 
   registerPaperLissteners() {
     this.paper.on({
-      'link:pointermove': function (elementView, evt, x, y) {
+      "link:pointermove": function (elementView, evt, x, y) {
         let coordinates = new joint.g.Point(x, y);
-        let link = (elementView.model as joint.shapes.standard.Link);
+        let link = elementView.model as joint.shapes.standard.Link;
         let source = link.source();
         link.disconnect();
         link.source(source);
 
-        let elementBelow = this.model.findModelsFromPoint(coordinates).find(function (el) {
-          return (el.id !== link.id);
-        });
+        let elementBelow = this.model
+          .findModelsFromPoint(coordinates)
+          .find(function (el) {
+            return el.id !== link.id;
+          });
 
         if (elementBelow) {
           link.target(elementBelow);
@@ -239,31 +291,28 @@ export class DrawComponent implements AfterViewInit {
         }
       },
 
-      'element:pointerclick': function (elementView: joint.dia.CellView) {
+      "element:pointerclick": function (elementView: joint.dia.CellView) {
         this.removeTools();
         let elementToolsView = new joint.dia.ToolsView({
           tools: [
             new joint.elementTools.Boundary(),
             new joint.elementTools.Remove(),
-            new joint.elementTools['LinkButton'](),
+            new joint.elementTools["LinkButton"](),
           ],
         });
         elementView.addTools(elementToolsView);
       },
 
-      'link:pointerclick': function (linkView: joint.dia.LinkView) {
+      "link:pointerclick": function (linkView: joint.dia.LinkView) {
         let linkToolsView = new joint.dia.ToolsView({
-          tools: [
-            new joint.linkTools.Remove(),
-          ]
+          tools: [new joint.linkTools.Remove()],
         });
         linkView.addTools(linkToolsView);
       },
 
-      'blank:pointerclick': function (elementView: joint.dia.CellView) {
+      "blank:pointerclick": function (elementView: joint.dia.CellView) {
         this.removeTools();
       },
-
     });
   }
 
@@ -271,20 +320,23 @@ export class DrawComponent implements AfterViewInit {
     this.registerDOMListeners();
     this.customizeJoint();
 
-    this.graph = new joint.dia.Graph({}, {
-      cellNamespace: joint.shapes,
-    });
+    this.graph = new joint.dia.Graph(
+      {},
+      {
+        cellNamespace: joint.shapes,
+      }
+    );
 
     this.paper = new joint.dia.Paper({
-      el: '#canvas',
+      el: "#canvas",
       model: this.graph,
-      width: '100%',
+      width: "100%",
       height: window.innerHeight,
       cellViewNamespace: joint.shapes,
       gridSize: 10,
       drawGrid: true,
       background: {
-        color: '#rgb(255 255 255)'
+        color: "#rgb(255 255 255)",
       },
     });
 
@@ -362,48 +414,85 @@ export class DrawComponent implements AfterViewInit {
     // let json = JSON.parse(jsonStr)
     // this.graph.fromJSON(json);
 
-    this.paletteGraph = new joint.dia.Graph({}, {
-      cellNamespace: joint.shapes,
-    });
+    this.paletteGraph = new joint.dia.Graph(
+      {},
+      {
+        cellNamespace: joint.shapes,
+      }
+    );
 
     this.palettePaper = new joint.dia.Paper({
-      el: '#palette',
+      el: "#palette",
       model: this.paletteGraph,
-      width: '120px',
-      height: window.innerHeight,
+      width: "210px",
+      height: (window.innerHeight * 3) / 4,
       cellViewNamespace: joint.shapes,
       gridSize: 10,
       drawGrid: true,
-      // background: {
-      //   color: '#E6E6E6'
-      // },
-      interactive: false,
+      background: {
+        color: "whitesmoke",
+      },
+      interactive: true,
     });
 
     this.registerPalettePaperEvents();
 
+    this.createShapesPanel(this.paletteGraph, this.flowchartItems);
+  }
+
+  private createShapesPanel(paletteGraph, shapesList) {
+    var columns = shapesList.columns;
+    shapesList.shapes.general.forEach((item, index) => {
+      var xAxis = 0;
+      var yAxis = this.yAxis + Math.floor(index / columns) * 60;
+
+      var count = index % columns;
+
+      if (count) {
+        xAxis = this.xAxis + count * 60;
+      } else {
+        xAxis = this.xAxis;
+      }
+
+      switch (item) {
+        case "rectangle":
+          this.createRectangle(paletteGraph, xAxis, yAxis);
+          break;
+        case "circle":
+          this.createCircle(paletteGraph, xAxis, yAxis);
+          break;
+        case "ellipse":
+          this.createEllipse(paletteGraph, xAxis, yAxis);
+          break;
+      }
+    });
+  }
+
+  private createRectangle(paletteGraph, xAxis, yAxis) {
     let rectEntry = new joint.shapes.standard.Rectangle();
-    rectEntry.position(26, 58);
+    rectEntry.position(xAxis, yAxis);
     rectEntry.resize(60, 30);
-    // rectEntry.attr({
-    // body: {
-    //   fill: '#7E7E81'
-    // },
-    // });
+    rectEntry.attr({
+      body: {
+        fill: "white",
+      },
+    });
     rectEntry.addTo(this.paletteGraph);
+  }
 
+  private createCircle(paletteGraph, xAxis, yAxis) {
     let circleEntry = new joint.shapes.standard.Circle();
-    circleEntry.position(26, 128);
-    circleEntry.resize(60, 60);
-    // circleEntry.attr('body/fill', '#7E7E81');
-    circleEntry.attr('body/stroke', 'rgb(0, 0, 0)');
+    circleEntry.position(xAxis, yAxis);
+    circleEntry.resize(60, 30);
+    circleEntry.attr("body/stroke", "rgb(0, 0, 0)");
     circleEntry.addTo(this.paletteGraph);
+  }
 
+  private createEllipse(paletteGraph, xAxis, yAxis) {
     let ellipseEntry = new joint.shapes.standard.Ellipse();
-    ellipseEntry.position(26, 228);
+    ellipseEntry.position(xAxis, yAxis);
     ellipseEntry.resize(60, 30);
-    // ellipseEntry.attr('body/fill', '#7E7E81');
-    ellipseEntry.attr('body/stroke', 'rgb(0, 0, 0)');
+    ellipseEntry.attr("body/stroke", "rgb(0, 0, 0)");
     ellipseEntry.addTo(this.paletteGraph);
   }
 
@@ -412,49 +501,55 @@ export class DrawComponent implements AfterViewInit {
     let paper = this.paper;
     let graph = this.graph;
 
-    this.palettePaper.on('cell:pointerdown', function (cellView, e, x, y) {
-      $('body').append('<div id="flyPaper" style="position:fixed;z-index:100;opacity:.7;pointer-event:none;"></div>');
-      let flyGraph = new joint.dia.Graph;
+    this.palettePaper.on("cell:pointerdown", function (cellView, e, x, y) {
+      $("body").append(
+        '<div id="flyPaper" style="position:fixed;z-index:100;opacity:.7;pointer-event:none;"></div>'
+      );
+      let flyGraph = new joint.dia.Graph();
       let flyPaper = new joint.dia.Paper({
-        el: $('#flyPaper'),
+        el: $("#flyPaper"),
         model: flyGraph,
-        interactive: false
+        interactive: false,
       });
       let flyShape = cellView.model.clone();
-      let pos = cellView.model.position()
+      let pos = cellView.model.position();
       let offset = {
         x: x - pos.x,
-        y: y - pos.y
+        y: y - pos.y,
       };
 
       flyShape.position(0, 0);
       flyGraph.addCell(flyShape);
       $("#flyPaper").offset({
         left: e.pageX - offset.x,
-        top: e.pageY - offset.y
+        top: e.pageY - offset.y,
       });
-      $('body').on('mousemove.fly', function (e) {
+      $("body").on("mousemove.fly", function (e) {
         $("#flyPaper").offset({
           left: e.pageX - offset.x,
-          top: e.pageY - offset.y
+          top: e.pageY - offset.y,
         });
       });
-      $('body').on('mouseup.fly', function (e) {
+      $("body").on("mouseup.fly", function (e) {
         let x = e.pageX;
         let y = e.pageY;
         let target = paper.$el.offset();
 
-        if (x > target.left && x < target.left + paper.$el.width() && y > target.top && y < target.top + paper.$el.height()) {
+        if (
+          x > target.left &&
+          x < target.left + paper.$el.width() &&
+          y > target.top &&
+          y < target.top + paper.$el.height()
+        ) {
           let s = flyShape.clone();
           s.position(x - target.left - offset.x, y - target.top - offset.y);
           graph.addCell(s);
         }
 
-        $('body').off('mousemove.fly').off('mouseup.fly');
+        $("body").off("mousemove.fly").off("mouseup.fly");
         flyShape.remove();
-        $('#flyPaper').remove();
+        $("#flyPaper").remove();
       });
     });
   }
-
 }
