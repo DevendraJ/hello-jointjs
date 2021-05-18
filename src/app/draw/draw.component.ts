@@ -284,7 +284,7 @@ export class DrawComponent implements AfterViewInit {
       gridSize: 10,
       drawGrid: true,
       background: {
-        color: '#E9EAF4'
+        color: '#rgb(255 255 255)'
       },
     });
 
@@ -369,14 +369,14 @@ export class DrawComponent implements AfterViewInit {
     this.palettePaper = new joint.dia.Paper({
       el: '#palette',
       model: this.paletteGraph,
-      width: $('#palette').width() - 50,
+      width: '120px',
       height: window.innerHeight,
       cellViewNamespace: joint.shapes,
       gridSize: 10,
       drawGrid: true,
-      background: {
-        color: '#DEDEE4'
-      },
+      // background: {
+      //   color: '#E6E6E6'
+      // },
       interactive: false,
     });
 
@@ -385,24 +385,24 @@ export class DrawComponent implements AfterViewInit {
     let rectEntry = new joint.shapes.standard.Rectangle();
     rectEntry.position(26, 58);
     rectEntry.resize(60, 30);
-    rectEntry.attr({
-      body: {
-        fill: '#7E7E81'
-      },
-    });
+    // rectEntry.attr({
+    // body: {
+    //   fill: '#7E7E81'
+    // },
+    // });
     rectEntry.addTo(this.paletteGraph);
 
     let circleEntry = new joint.shapes.standard.Circle();
     circleEntry.position(26, 128);
     circleEntry.resize(60, 60);
-    circleEntry.attr('body/fill', '#7E7E81');
+    // circleEntry.attr('body/fill', '#7E7E81');
     circleEntry.attr('body/stroke', 'rgb(0, 0, 0)');
     circleEntry.addTo(this.paletteGraph);
 
     let ellipseEntry = new joint.shapes.standard.Ellipse();
     ellipseEntry.position(26, 228);
     ellipseEntry.resize(60, 30);
-    ellipseEntry.attr('body/fill', '#7E7E81');
+    // ellipseEntry.attr('body/fill', '#7E7E81');
     ellipseEntry.attr('body/stroke', 'rgb(0, 0, 0)');
     ellipseEntry.addTo(this.paletteGraph);
   }

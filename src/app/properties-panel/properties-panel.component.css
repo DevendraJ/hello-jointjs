@@ -1,0 +1,11 @@
+.properties-panel {
+    z-index: 9999;
+    position: absolute;
+    border: 2px solid #b3b3b3;
+    background-color: whitesmoke;
+    right: 15px;
+    opacity: 1;
+    top: 15px;
+    height: 100%;
+    padding: 10px;
+}
