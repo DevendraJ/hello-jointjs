@@ -6,7 +6,7 @@ import * as _ from "underscore";
 @Injectable({
   providedIn: "root",
 })
-export class ShapeEventService {
+export class JointJsService {
   constructor() {}
 
   public customizeJoint() {

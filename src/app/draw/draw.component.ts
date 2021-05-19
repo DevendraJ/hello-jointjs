@@ -3,7 +3,7 @@ import * as joint from "jointjs/dist/joint";
 import * as _ from "underscore";
 import * as $ from "jquery";
 import { ShapeService } from "../services/shape.service";
-import { ShapeEventService } from "../services/shape-event.service";
+import { JointJsService } from "../services/joint-js.service";
 
 @Component({
   selector: "app-draw",
@@ -35,8 +35,8 @@ export class DrawComponent implements AfterViewInit {
   constructor(
     private renderer: Renderer2,
     private shapeService: ShapeService,
-    private shapeEventService: ShapeEventService
-  ) {}
+    private jointJsService: JointJsService
+  ) { }
 
   private registerDOMListeners() {
     this.renderer.listen(
@@ -101,7 +101,7 @@ export class DrawComponent implements AfterViewInit {
     return new joint.dia.Paper({
       el: "#palette",
       model: paletteGraph,
-      width: "210px",
+      width: this.xAxis + this.paletteItems.columns * 80,
       height: (window.innerHeight * 3) / 4,
       cellViewNamespace: joint.shapes,
       gridSize: 10,
@@ -115,7 +115,7 @@ export class DrawComponent implements AfterViewInit {
 
   initializeCanvas() {
     this.registerDOMListeners();
-    this.shapeEventService.customizeJoint();
+    this.jointJsService.customizeJoint();
 
     this.graph = this.createGraph();
     this.paper = this.createPaper(this.graph);
@@ -133,6 +133,13 @@ export class DrawComponent implements AfterViewInit {
       this.graph,
       this.palettePaper
     );
+
+    // let htmlRect = new joint.shapes['html'].Rect({
+    //   position: { x: 80, y: 180 },
+    //   size: { width: 170, height: 100 },
+    // });
+    // htmlRect.attr('label/text', 'Html Rectangle');
+    // htmlRect.addTo(this.graph);
   }
 
   ngAfterViewInit() {
