@@ -10,42 +10,45 @@ export class PropertiesPanelComponent implements OnInit {
   @Input()
   private inputElement: joint.dia.Element;
 
-  private labelText: string;
-  private fill: string;
-  private stroke: string;
+  public panelForm: FormGroup;
 
-  public panelProperyForm: FormGroup;
+  constructor(private fb: FormBuilder) { }
 
-  constructor(private fb: FormBuilder) {}
+  ngOnInit() {
+    this.initializeForm();
+    this.subscribeChanges();
+  }
 
   private initializeForm() {
-    this.panelProperyForm = this.fb.group({
-      label: [null, []],
-      stroke: [null, []],
-      fill: [null, []],
+    let labelText: String = "";
+    let labelAttr = this.inputElement.attributes.attrs["label"];
+    if (labelAttr && labelAttr["text"]) {
+      labelText = labelAttr["text"];
+    }
+
+    this.panelForm = this.fb.group({
+      labelText: [labelText],
+      strokeColor: [
+        this.inputElement.attributes.attrs.body.stroke,
+      ],
+      fillColor: [
+        this.inputElement.attributes.attrs.body.fill,
+      ],
     });
   }
 
-  ngOnInit() {
-    this.initProps();
-    this.initializeForm();
+  subscribeChanges() {
+    this.panelForm.get('labelText').valueChanges.subscribe((val) => {
+      this.inputElement.attr("label/text", val);
+    });
+
+    this.panelForm.get('strokeColor').valueChanges.subscribe((val) => {
+      this.inputElement.attr("body/stroke", val);
+    });
+
+    this.panelForm.get('fillColor').valueChanges.subscribe((val) => {
+      this.inputElement.attr("body/fill", val);
+    });
   }
 
-  initProps() {
-    let labelAttr = this.inputElement.attributes.attrs["label"];
-    if (labelAttr && labelAttr["text"]) {
-      this.labelText = labelAttr["text"];
-    } else {
-      this.labelText = "";
-    }
-
-    this.stroke = this.inputElement.attributes.attrs.body.stroke;
-    this.fill = this.inputElement.attributes.attrs.body.fill;
-  }
-
-  updateModel() {
-    this.inputElement.attr("label/text", this.labelText);
-    this.inputElement.attr("body/stroke", this.stroke);
-    this.inputElement.attr("body/fill", this.fill);
-  }
 }

@@ -23,43 +23,14 @@ export class DrawComponent implements AfterViewInit {
   private paletteGraph: joint.dia.Graph;
   private palettePaper: joint.dia.Paper;
 
-  private flowchartItems = {
-    columns: 3,
+  private paletteItems = {
+    columns: 1,
     shapes: {
-      // general: ["rectangle", "circle", "ellipse"],
-      general: [
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-        "circle",
-      ],
+      general: ["rectangle", "circle", "ellipse"],
     },
   };
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2) { }
 
   registerDOMListeners() {
     this.renderer.listen(
@@ -68,8 +39,8 @@ export class DrawComponent implements AfterViewInit {
       (event) => {
         let { top, left } = $("#canvas").offset();
         let position = new joint.g.Point(
-          event.clientX - left,
-          event.clientY - top
+          event.clientX,
+          event.clientY
         );
         let elements: joint.dia.Element[] =
           this.graph.findModelsFromPoint(position);
@@ -122,7 +93,6 @@ export class DrawComponent implements AfterViewInit {
         return this;
       },
       updateBox: function () {
-        // Set the position and dimension of the box so that it covers the JointJS element.
         let bbox = this.model.getBBox();
         this.$box.find("p").text(this.model.attributes.attrs.label.text);
         let { left, top } = $("#canvas").offset();
@@ -269,7 +239,7 @@ export class DrawComponent implements AfterViewInit {
     });
   }
 
-  registerPaperLissteners() {
+  registerPaperListeners() {
     this.paper.on({
       "link:pointermove": function (elementView, evt, x, y) {
         let coordinates = new joint.g.Point(x, y);
@@ -340,7 +310,7 @@ export class DrawComponent implements AfterViewInit {
       },
     });
 
-    this.registerPaperLissteners();
+    this.registerPaperListeners();
 
     // this.rect = new joint.shapes.standard.Rectangle();
     // this.rect.position(100, 30);
@@ -424,7 +394,7 @@ export class DrawComponent implements AfterViewInit {
     this.palettePaper = new joint.dia.Paper({
       el: "#palette",
       model: this.paletteGraph,
-      width: "210px",
+      width: this.xAxis + this.paletteItems.columns * 80,
       height: (window.innerHeight * 3) / 4,
       cellViewNamespace: joint.shapes,
       gridSize: 10,
@@ -432,19 +402,19 @@ export class DrawComponent implements AfterViewInit {
       background: {
         color: "whitesmoke",
       },
-      interactive: true,
+      interactive: false,
     });
 
     this.registerPalettePaperEvents();
 
-    this.createShapesPanel(this.paletteGraph, this.flowchartItems);
+    this.createPaletteElements(this.paletteGraph, this.paletteItems);
   }
 
-  private createShapesPanel(paletteGraph, shapesList) {
+  private createPaletteElements(paletteGraph, shapesList) {
     var columns = shapesList.columns;
     shapesList.shapes.general.forEach((item, index) => {
       var xAxis = 0;
-      var yAxis = this.yAxis + Math.floor(index / columns) * 60;
+      var yAxis = this.yAxis + Math.floor(index / columns) * 70;
 
       var count = index % columns;
 
@@ -483,7 +453,7 @@ export class DrawComponent implements AfterViewInit {
   private createCircle(paletteGraph, xAxis, yAxis) {
     let circleEntry = new joint.shapes.standard.Circle();
     circleEntry.position(xAxis, yAxis);
-    circleEntry.resize(60, 30);
+    circleEntry.resize(40, 40);
     circleEntry.attr("body/stroke", "rgb(0, 0, 0)");
     circleEntry.addTo(this.paletteGraph);
   }

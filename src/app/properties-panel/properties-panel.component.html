@@ -1,25 +1,22 @@
-<form class="properties-panel" [formGroup]="panelProperyForm">
+<form class="properties-panel" [formGroup]="panelForm">
   <p>Properties Panel</p>
   <input
     type="text"
-    formControlName="label"
-    (input)="updateModel()"
+    formControlName="labelText"
     placeholder="Label"
     class="form-control"
   />
   <br />
   <input
     type="text"
-    formControlName="stroke"
-    (input)="updateModel()"
+    formControlName="strokeColor"
     placeholder="Stroke Colour e.g #FFFFFF"
     class="form-control"
   />
   <br />
   <input
     type="text"
-    formControlName="fill"
-    (input)="updateModel()"
+    formControlName="fillColor"
     placeholder="Fill Colour e.g #FFFFFF"
     class="form-control"
   />
