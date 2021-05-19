@@ -27,8 +27,8 @@ export class PropertiesPanelComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initProps();
     this.initializeForm();
+    this.initProps();
   }
 
   initProps() {
@@ -41,6 +41,12 @@ export class PropertiesPanelComponent implements OnInit {
 
     this.stroke = this.inputElement.attributes.attrs.body.stroke;
     this.fill = this.inputElement.attributes.attrs.body.fill;
+
+    this.panelProperyForm.patchValue({
+      label: this.inputElement.attributes.attrs.label.text,
+      stroke: this.inputElement.attributes.attrs.body.stroke,
+      fill: this.inputElement.attributes.attrs.body.fill,
+    });
   }
 
   updateModel() {
