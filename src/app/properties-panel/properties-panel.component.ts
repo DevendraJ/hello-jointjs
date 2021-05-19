@@ -10,48 +10,71 @@ export class PropertiesPanelComponent implements OnInit {
   @Input()
   private inputElement: joint.dia.Element;
 
-  private labelText: string;
-  private fill: string;
-  private stroke: string;
-
-  public panelProperyForm: FormGroup;
+  public panelForm: FormGroup;
+  private isCircle = false;
 
   constructor(private fb: FormBuilder) {}
 
-  private initializeForm() {
-    this.panelProperyForm = this.fb.group({
-      label: [null, []],
-      stroke: [null, []],
-      fill: [null, []],
-    });
-  }
-
   ngOnInit() {
     this.initializeForm();
-    this.initProps();
+    this.subscribeChanges();
   }
 
-  initProps() {
+  private initializeForm() {
+    this.isCircle = this.inputElement.get("type") === "standard.Circle";
+
+    let labelText: String = "";
+    let labelFill = "white";
     let labelAttr = this.inputElement.attributes.attrs["label"];
     if (labelAttr && labelAttr["text"]) {
-      this.labelText = labelAttr["text"];
-    } else {
-      this.labelText = "";
+      labelText = labelAttr["text"];
+    }
+    if (labelAttr && labelAttr["fill"]) {
+      labelFill = labelAttr["fill"];
     }
 
-    this.stroke = this.inputElement.attributes.attrs.body.stroke;
-    this.fill = this.inputElement.attributes.attrs.body.fill;
+    let { width, height } = this.inputElement.size();
 
-    this.panelProperyForm.patchValue({
-      label: this.inputElement.attributes.attrs.label.text,
-      stroke: this.inputElement.attributes.attrs.body.stroke,
-      fill: this.inputElement.attributes.attrs.body.fill,
+    this.panelForm = this.fb.group({
+      labelText: [labelText],
+      labelFill: [labelFill],
+      strokeColor: [this.inputElement.attributes.attrs.body.stroke],
+      fillColor: [this.inputElement.attributes.attrs.body.fill],
+      width: [width],
+      height: [height],
+      radius: [width / 2],
     });
   }
 
-  updateModel() {
-    this.inputElement.attr("label/text", this.labelText);
-    this.inputElement.attr("body/stroke", this.stroke);
-    this.inputElement.attr("body/fill", this.fill);
+  subscribeChanges() {
+    this.panelForm.get("labelText").valueChanges.subscribe((val) => {
+      this.inputElement.attr("label/text", val);
+    });
+
+    this.panelForm.get("labelFill").valueChanges.subscribe((val) => {
+      this.inputElement.attr("label/fill", val);
+    });
+
+    this.panelForm.get("strokeColor").valueChanges.subscribe((val) => {
+      this.inputElement.attr("body/stroke", val);
+    });
+
+    this.panelForm.get("fillColor").valueChanges.subscribe((val) => {
+      this.inputElement.attr("body/fill", val);
+    });
+
+    this.panelForm.get("width").valueChanges.subscribe((val) => {
+      let { height } = this.inputElement.size();
+      this.inputElement.resize(val, height);
+    });
+
+    this.panelForm.get("height").valueChanges.subscribe((val) => {
+      let { width } = this.inputElement.size();
+      this.inputElement.resize(width, val);
+    });
+
+    this.panelForm.get("radius").valueChanges.subscribe((val) => {
+      this.inputElement.resize(val * 2, val * 2);
+    });
   }
 }

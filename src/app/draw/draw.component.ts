@@ -25,8 +25,8 @@ export class DrawComponent implements AfterViewInit {
   private paletteGraph: joint.dia.Graph;
   private palettePaper: joint.dia.Paper;
 
-  private flowchartItems = {
-    columns: 3,
+  private paletteItems = {
+    columns: 1,
     shapes: {
       general: ["rectangle", "circle", "ellipse"],
     },
@@ -44,10 +44,7 @@ export class DrawComponent implements AfterViewInit {
       "contextmenu",
       (event) => {
         let { top, left } = $("#canvas").offset();
-        let position = new joint.g.Point(
-          event.clientX - left,
-          event.clientY - top
-        );
+        let position = new joint.g.Point(event.clientX, event.clientY);
         let elements: joint.dia.Element[] =
           this.graph.findModelsFromPoint(position);
         let size = elements.length;
@@ -126,14 +123,10 @@ export class DrawComponent implements AfterViewInit {
     this.palettePaper = this.createPalettePaper(this.paletteGraph);
     this.shapeService.registerPaperListeners(this.paper);
 
-    this.shapeService.createShapesPanel(
-      this.paletteGraph,
-      this.flowchartItems,
-      {
-        xAxis: this.xAxis,
-        yAxis: this.yAxis,
-      }
-    );
+    this.shapeService.createShapesPanel(this.paletteGraph, this.paletteItems, {
+      xAxis: this.xAxis,
+      yAxis: this.yAxis,
+    });
 
     this.shapeService.registerPalettePaperEvents(
       this.paper,
