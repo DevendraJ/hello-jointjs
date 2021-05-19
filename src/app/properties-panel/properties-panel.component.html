@@ -1,23 +1,61 @@
 <form class="properties-panel" [formGroup]="panelForm">
   <p>Properties Panel</p>
+  <label>Label Text</label>
+  <br>
   <input
     type="text"
     formControlName="labelText"
-    placeholder="Label"
+    class="form-control"
+  />
+  <br>
+  <label>Label Fill</label>
+  <br>
+  <input
+    type="text"
+    formControlName="labelFill"
     class="form-control"
   />
   <br />
+  <label>Stroke Colour</label>
+  <br>
   <input
     type="text"
     formControlName="strokeColor"
-    placeholder="Stroke Colour e.g #FFFFFF"
     class="form-control"
   />
   <br />
+  <label>Fill Colour</label>
+  <br>
   <input
     type="text"
     formControlName="fillColor"
-    placeholder="Fill Colour e.g #FFFFFF"
+    class="form-control"
+  />
+  <br *ngIf="!isCircle" />
+  <label *ngIf="!isCircle">Width</label>
+  <br *ngIf="!isCircle">
+  <input
+    *ngIf="!isCircle"
+    type="number"
+    formControlName="width"
+    class="form-control"
+  />
+  <br *ngIf="!isCircle" />
+  <label *ngIf="!isCircle">Height</label>
+  <br *ngIf="!isCircle">
+  <input
+    *ngIf="!isCircle"
+    type="number"
+    formControlName="height"
+    class="form-control"
+  />
+  <br *ngIf="isCircle">
+  <label *ngIf="isCircle">Radius</label>
+  <br *ngIf="isCircle">
+  <input
+    *ngIf="isCircle"
+    type="number"
+    formControlName="radius"
     class="form-control"
   />
 </form>

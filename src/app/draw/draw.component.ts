@@ -312,19 +312,19 @@ export class DrawComponent implements AfterViewInit {
 
     this.registerPaperListeners();
 
-    // this.rect = new joint.shapes.standard.Rectangle();
-    // this.rect.position(100, 30);
-    // this.rect.resize(100, 40);
-    // this.rect.attr({
-    //   body: {
-    //     fill: '#F6A11B'
-    //   },
-    //   label: {
-    //     text: 'Hello',
-    //     fill: 'white'
-    //   }
-    // });
-    // this.rect.addTo(this.graph);
+    this.rect = new joint.shapes.standard.Rectangle();
+    this.rect.position(200, 30);
+    this.rect.resize(100, 40);
+    this.rect.attr({
+      body: {
+        fill: '#F6A11B'
+      },
+      label: {
+        text: 'Hello',
+        fill: 'white'
+      }
+    });
+    this.rect.addTo(this.graph);
 
     // this.rect2 = new joint.shapes.standard.Rectangle();
     // this.rect2.resize(100, 40);
