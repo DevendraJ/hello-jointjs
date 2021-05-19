@@ -1,7 +1,10 @@
-<div style="width: 100%;">
-    <div #palette id="palette" class="palette"></div>
-    <div #canvas id="canvas"></div>
-    <div>
-        <app-properties-panel *ngIf="showProps" [inputElement]='selectedElement'></app-properties-panel>
-    </div>
+<div style="width: 100%">
+  <div #palette id="palette" class="palette"></div>
+  <div #canvas id="canvas" class="canvas"></div>
+  <div>
+    <app-properties-panel
+      *ngIf="showProps"
+      [inputElement]="selectedElement"
+    ></app-properties-panel>
+  </div>
 </div>

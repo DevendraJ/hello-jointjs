@@ -1,16 +1,21 @@
 .canvas {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 .palette {
-    height: 300px;
-    width: 120px;
-    z-index: 9999;
-    position: absolute;
-    border: 2px solid #b3b3b3;
-    background-color: whitesmoke;
-    left: 15px;
-    opacity: 1;
-    top: 15px;
+  z-index: 9999;
+  border: 1px solid #dcdcdc;
+  background-color: #f8f8f8 !important;
+  box-shadow: 3px 3px #d8d8d8;
+  border-radius: 5px;
+  left: 15px;
+  opacity: 1;
+  top: 15px;
+}
+
+.palette {
+  height: 300px;
+  width: 120px;
+  position: absolute;
 }
