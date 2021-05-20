@@ -15,18 +15,20 @@
     formControlName="labelFill"
     class="form-control"
   />
-  <br />
-  <label>Stroke Colour</label>
-  <br>
+  <br *ngIf="!isCustomShape"/>
+  <label *ngIf="!isCustomShape">Stroke Colour</label>
+  <br *ngIf="!isCustomShape">
   <input
+    *ngIf="!isCustomShape"
     type="text"
     formControlName="strokeColor"
     class="form-control"
   />
-  <br />
-  <label>Fill Colour</label>
-  <br>
+  <br *ngIf="!isCustomShape"/>
+  <label *ngIf="!isCustomShape">Fill Colour</label>
+  <br *ngIf="!isCustomShape">
   <input
+    *ngIf="!isCustomShape"
     type="text"
     formControlName="fillColor"
     class="form-control"
