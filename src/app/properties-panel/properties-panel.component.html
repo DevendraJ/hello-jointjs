@@ -1,39 +1,23 @@
 <form class="properties-panel" [formGroup]="panelForm">
   <p>Properties Panel</p>
   <label>Label Text</label>
-  <br>
-  <input
-    type="text"
-    formControlName="labelText"
-    class="form-control"
-  />
-  <br>
+  <br />
+  <input type="text" formControlName="labelText" class="form-control" />
+  <br />
   <label>Label Fill</label>
-  <br>
-  <input
-    type="text"
-    formControlName="labelFill"
-    class="form-control"
-  />
+  <br />
+  <input type="text" formControlName="labelFill" class="form-control" />
   <br />
   <label>Stroke Colour</label>
-  <br>
-  <input
-    type="text"
-    formControlName="strokeColor"
-    class="form-control"
-  />
+  <br />
+  <input type="text" formControlName="strokeColor" class="form-control" />
   <br />
   <label>Fill Colour</label>
-  <br>
-  <input
-    type="text"
-    formControlName="fillColor"
-    class="form-control"
-  />
+  <br />
+  <input type="text" formControlName="fillColor" class="form-control" />
   <br *ngIf="!isCircle" />
   <label *ngIf="!isCircle">Width</label>
-  <br *ngIf="!isCircle">
+  <br *ngIf="!isCircle" />
   <input
     *ngIf="!isCircle"
     type="number"
@@ -42,16 +26,16 @@
   />
   <br *ngIf="!isCircle" />
   <label *ngIf="!isCircle">Height</label>
-  <br *ngIf="!isCircle">
+  <br *ngIf="!isCircle" />
   <input
     *ngIf="!isCircle"
     type="number"
     formControlName="height"
     class="form-control"
   />
-  <br *ngIf="isCircle">
+  <br *ngIf="isCircle" />
   <label *ngIf="isCircle">Radius</label>
-  <br *ngIf="isCircle">
+  <br *ngIf="isCircle" />
   <input
     *ngIf="isCircle"
     type="number"

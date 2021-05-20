@@ -13,7 +13,17 @@ export class PropertiesPanelComponent implements OnInit {
   public panelForm: FormGroup;
   private isCircle = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.panelForm = this.fb.group({
+      labelText: [null, []],
+      labelFill: [null, []],
+      strokeColor: [null, []],
+      fillColor: [null, []],
+      width: [null, []],
+      height: [null, []],
+      radius: [null, []],
+    });
+  }
 
   ngOnInit() {
     this.initializeForm();
@@ -34,12 +44,18 @@ export class PropertiesPanelComponent implements OnInit {
     }
 
     let { width, height } = this.inputElement.size();
+    let stroke = null;
+    let fill = null;
+    if (this.inputElement.attributes.attrs.body) {
+      stroke = this.inputElement.attributes.attrs.body.stroke;
+      fill = this.inputElement.attributes.attrs.body.fill;
+    }
 
     this.panelForm = this.fb.group({
       labelText: [labelText],
       labelFill: [labelFill],
-      strokeColor: [this.inputElement.attributes.attrs.body.stroke],
-      fillColor: [this.inputElement.attributes.attrs.body.fill],
+      strokeColor: [stroke],
+      fillColor: [fill],
       width: [width],
       height: [height],
       radius: [width / 2],

@@ -26,7 +26,7 @@ export class DrawComponent implements AfterViewInit {
   private palettePaper: joint.dia.Paper;
 
   private paletteItems = {
-    columns: 1,
+    columns: 3,
     shapes: {
       general: ["rectangle", "circle", "ellipse"],
     },
@@ -44,9 +44,11 @@ export class DrawComponent implements AfterViewInit {
       "contextmenu",
       (event) => {
         let { top, left } = $("#canvas").offset();
-        let position = new joint.g.Point(event.clientX, event.clientY);
+        let position = new joint.g.Point(event.clientX, event.clientY - 75);
         let elements: joint.dia.Element[] =
           this.graph.findModelsFromPoint(position);
+        console.log(position);
+
         let size = elements.length;
         if (size > 0) {
           this.selectedElement = elements[size - 1];
@@ -66,10 +68,10 @@ export class DrawComponent implements AfterViewInit {
 
   private createPaper(graph) {
     return new joint.dia.Paper({
-      el: "#canvas",
+      el: document.getElementById("canvas"),
       model: graph,
       width: "100%",
-      height: window.innerHeight,
+      height: "100%",
       cellViewNamespace: joint.shapes,
       gridSize: 10,
       drawGrid: true,
@@ -133,6 +135,12 @@ export class DrawComponent implements AfterViewInit {
       this.graph,
       this.palettePaper
     );
+    // let htmlRect = new joint.shapes["html"].Rect({
+    //   position: { x: 80, y: 180 },
+    //   size: { width: 170, height: 100 },
+    // });
+    // htmlRect.attr("label/text", "Html Rectangle");
+    // htmlRect.addTo(this.graph);
   }
 
   ngAfterViewInit() {

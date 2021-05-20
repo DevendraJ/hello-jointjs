@@ -1,15 +1,11 @@
 .properties-panel {
   position: absolute;
-  right: 0;
-  top: 0;
-  height: 90%;
-  width: 20%;
-  margin: 15px;
+  right: 15px;
+  top: 80px;
   padding: 10px;
   z-index: 9999;
   border: 1px solid #dcdcdc;
   background-color: #f8f8f8 !important;
-  box-shadow: 3px 3px #d8d8d8;
   border-radius: 5px;
   opacity: 1;
 }
