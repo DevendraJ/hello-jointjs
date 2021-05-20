@@ -11,7 +11,8 @@ export class PropertiesPanelComponent implements OnInit {
   private inputElement: joint.dia.Element;
 
   public panelForm: FormGroup;
-  private isCircle = false;
+  private isCircle: boolean = false;
+  private isCustomShape: boolean = false;
 
   constructor(private fb: FormBuilder) {
     this.panelForm = this.fb.group({
@@ -31,7 +32,16 @@ export class PropertiesPanelComponent implements OnInit {
   }
 
   private initializeForm() {
-    this.isCircle = this.inputElement.get("type") === "standard.Circle";
+    let type = this.inputElement.get("type");
+    this.isCustomShape = type.split(".")[0] !== "standard";
+
+    let strokeColor = "";
+    let fillColor = "";
+    if (!this.isCustomShape) {
+      this.isCircle = type === "standard.Circle";
+      strokeColor = this.inputElement.attributes.attrs.body.stroke;
+      fillColor = this.inputElement.attributes.attrs.body.fill;
+    }
 
     let labelText: String = "";
     let labelFill = "white";
@@ -54,8 +64,8 @@ export class PropertiesPanelComponent implements OnInit {
     this.panelForm = this.fb.group({
       labelText: [labelText],
       labelFill: [labelFill],
-      strokeColor: [stroke],
-      fillColor: [fill],
+      strokeColor: [strokeColor],
+      fillColor: [fillColor],
       width: [width],
       height: [height],
       radius: [width / 2],

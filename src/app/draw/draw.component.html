@@ -1,8 +1,10 @@
 <div>
   <div #palette id="palette" class="palette"></div>
   <div #canvas id="canvas" class="canvas"></div>
-  <app-properties-panel
-    *ngIf="showProps"
-    [inputElement]="selectedElement"
-  ></app-properties-panel>
+  <div>
+    <app-properties-panel
+      *ngIf="showProps"
+      [inputElement]="selectedElement"
+    ></app-properties-panel>
+  </div>
 </div>

@@ -7,14 +7,24 @@
   <label>Label Fill</label>
   <br />
   <input type="text" formControlName="labelFill" class="form-control" />
-  <br />
-  <label>Stroke Colour</label>
-  <br />
-  <input type="text" formControlName="strokeColor" class="form-control" />
-  <br />
-  <label>Fill Colour</label>
-  <br />
-  <input type="text" formControlName="fillColor" class="form-control" />
+  <br *ngIf="!isCustomShape" />
+  <label *ngIf="!isCustomShape">Stroke Colour</label>
+  <br *ngIf="!isCustomShape" />
+  <input
+    *ngIf="!isCustomShape"
+    type="text"
+    formControlName="strokeColor"
+    class="form-control"
+  />
+  <br *ngIf="!isCustomShape" />
+  <label *ngIf="!isCustomShape">Fill Colour</label>
+  <br *ngIf="!isCustomShape" />
+  <input
+    *ngIf="!isCustomShape"
+    type="text"
+    formControlName="fillColor"
+    class="form-control"
+  />
   <br *ngIf="!isCircle" />
   <label *ngIf="!isCircle">Width</label>
   <br *ngIf="!isCircle" />
