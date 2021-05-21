@@ -28,7 +28,7 @@ export class DrawComponent implements AfterViewInit {
   private paletteItems = {
     columns: 1,
     shapes: {
-      general: ["rectangle", "circle", "ellipse"],
+      general: ["rectangle", "circle", "htmlRect", "polygon"],
     },
   };
 
@@ -134,12 +134,12 @@ export class DrawComponent implements AfterViewInit {
       this.palettePaper
     );
 
-    let htmlRect = new joint.shapes['html'].Rect({
-      position: { x: 80, y: 180 },
-      size: { width: 170, height: 100 },
-    });
-    htmlRect.attr('label/text', 'Html Rectangle');
-    htmlRect.addTo(this.graph);
+    // let htmlRect = new joint.shapes['html'].Rect({
+    //   position: { x: 80, y: 180 },
+    //   size: { width: 170, height: 100 },
+    // });
+    // htmlRect.attr('label/text', 'Html Rectangle');
+    // htmlRect.addTo(this.graph);
   }
 
   ngAfterViewInit() {
