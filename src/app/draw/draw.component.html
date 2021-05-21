@@ -1,10 +1,9 @@
-<div>
-  <div #palette id="palette" class="palette"></div>
-  <div #canvas id="canvas" class="canvas"></div>
-  <div>
-    <app-properties-panel
-      *ngIf="showProps"
-      [inputElement]="selectedElement"
-    ></app-properties-panel>
-  </div>
+<div fxLayout="row" fxLayoutGap="15px" class="draw-component">
+  <div #canvas class="canvas" id="canvas"></div>
+  <div #palette class="palette" id="palette"></div>
+  <app-properties-panel
+    class="properties-panel"
+    *ngIf="showProps"
+    [inputElement]="selectedElement"
+  ></app-properties-panel>
 </div>

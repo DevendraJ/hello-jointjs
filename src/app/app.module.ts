@@ -50,6 +50,8 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 
+import { FlexLayoutModule } from "@angular/flex-layout";
+
 @NgModule({
   declarations: [AppComponent, DrawComponent, PropertiesPanelComponent],
   imports: [
@@ -94,6 +96,7 @@ import { MatTableModule } from "@angular/material/table";
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
+    FlexLayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

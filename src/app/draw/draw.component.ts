@@ -47,7 +47,6 @@ export class DrawComponent implements AfterViewInit {
         let position = new joint.g.Point(event.clientX, event.clientY - 75);
         let elements: joint.dia.Element[] =
           this.graph.findModelsFromPoint(position);
-        console.log(position);
 
         let size = elements.length;
         if (size > 0) {
@@ -70,13 +69,15 @@ export class DrawComponent implements AfterViewInit {
     return new joint.dia.Paper({
       el: document.getElementById("canvas"),
       model: graph,
-      width: "100%",
-      height: "100%",
+      width: "70vw",
+      height: "80vh",
       cellViewNamespace: joint.shapes,
       gridSize: 10,
-      drawGrid: true,
       background: {
-        color: "#rgb(255 255 255)",
+        color: "whitesmoke",
+      },
+      drawGrid: {
+        name: "dot",
       },
     });
   }
