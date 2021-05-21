@@ -28,12 +28,22 @@ export class ShapeService {
     circleEntry.addTo(paletteGraph);
   }
 
-  private createEllipse(paletteGraph, xAxis, yAxis) {
-    let ellipseEntry = new joint.shapes.standard.Ellipse();
-    ellipseEntry.position(xAxis, yAxis);
-    ellipseEntry.resize(60, 30);
-    ellipseEntry.attr("body/stroke", "rgb(0, 0, 0)");
-    ellipseEntry.addTo(paletteGraph);
+  private createHtmlRect(paletteGraph, xAxis, yAxis) {
+    let htmlRect = new joint.shapes['html'].Rect({
+      position: { x: xAxis, y: yAxis },
+      size: { width: 60, height: 30 },
+    });
+    htmlRect.attr('label/text', '');
+    htmlRect.addTo(paletteGraph);
+  }
+
+  private createPolygon(paletteGraph, xAxis, yAxis) {
+    let createPolygon = new joint.shapes.standard.Polygon();
+    createPolygon.position(xAxis, yAxis);
+    createPolygon.resize(60, 30);
+    createPolygon.attr("body/stroke", "rgb(0, 0, 0)");
+    createPolygon.attr('body/refPoints', '0,10 10,0 20,10 10,20');
+    createPolygon.addTo(paletteGraph);
   }
 
   public createShapesPanel(paletteGraph, shapesList, axis) {
@@ -57,9 +67,12 @@ export class ShapeService {
         case "circle":
           this.createCircle(paletteGraph, xAxis, yAxis);
           break;
-        case "ellipse":
-          this.createEllipse(paletteGraph, xAxis, yAxis);
+        case "htmlRect":
+          this.createHtmlRect(paletteGraph, xAxis, yAxis);
           break;
+        case "polygon":
+            this.createPolygon(paletteGraph, xAxis, yAxis);
+            break;  
       }
     });
   }

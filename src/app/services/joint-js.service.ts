@@ -181,7 +181,7 @@ export class JointJsService {
           let graph = this.paper.model as joint.dia.Graph;
           let element = this.model as joint.dia.Element;
           let position = element.attributes.position as joint.g.Point;
-          newLink.target(new joint.g.Point(position.x - 30, position.y + 40));
+          newLink.target(new joint.g.Point(position.x + 100, position.y ));
           newLink.addTo(graph);
         },
       },
