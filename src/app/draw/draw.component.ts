@@ -26,7 +26,8 @@ export class DrawComponent implements AfterViewInit {
   private paletteItems = {
     columns: 3,
     shapes: {
-      general: ["rectangle", "circle", "htmlRect", "polygon"],
+      general: ["rectangle", "circle", "polygon", "custom"],
+      // general: ["customRect"],
     },
   };
 
@@ -135,6 +136,8 @@ export class DrawComponent implements AfterViewInit {
       this.graph,
       this.palettePaper
     );
+    this.shapeService.customRectangle(this.graph, 180, 180);
+    this.shapeService.customRectangle(this.graph, 280, 280);
   }
 
   ngAfterViewInit() {
