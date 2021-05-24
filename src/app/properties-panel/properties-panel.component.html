@@ -1,55 +1,61 @@
-<form class="properties-panel" [formGroup]="panelForm">
-  <p>Properties Panel</p>
-  <label>Label Text</label>
-  <br />
-  <input type="text" formControlName="labelText" class="form-control" />
-  <br />
-  <label>Label Fill</label>
-  <br />
-  <input type="text" formControlName="labelFill" class="form-control" />
-  <br *ngIf="!isCustomShape" />
-  <label *ngIf="!isCustomShape">Stroke Colour</label>
-  <br *ngIf="!isCustomShape" />
-  <input
-    *ngIf="!isCustomShape"
-    type="text"
-    formControlName="strokeColor"
-    class="form-control"
-  />
-  <br *ngIf="!isCustomShape" />
-  <label *ngIf="!isCustomShape">Fill Colour</label>
-  <br *ngIf="!isCustomShape" />
-  <input
-    *ngIf="!isCustomShape"
-    type="text"
-    formControlName="fillColor"
-    class="form-control"
-  />
-  <br *ngIf="!isCircle" />
-  <label *ngIf="!isCircle">Width</label>
-  <br *ngIf="!isCircle" />
-  <input
-    *ngIf="!isCircle"
-    type="number"
-    formControlName="width"
-    class="form-control"
-  />
-  <br *ngIf="!isCircle" />
-  <label *ngIf="!isCircle">Height</label>
-  <br *ngIf="!isCircle" />
-  <input
-    *ngIf="!isCircle"
-    type="number"
-    formControlName="height"
-    class="form-control"
-  />
-  <br *ngIf="isCircle" />
-  <label *ngIf="isCircle">Radius</label>
-  <br *ngIf="isCircle" />
-  <input
-    *ngIf="isCircle"
-    type="number"
-    formControlName="radius"
-    class="form-control"
-  />
-</form>
+<mat-tab-group>
+  <mat-tab label="Styles">
+    <form [formGroup]="panelForm">
+      <p>Properties Panel</p>
+      <label>Label Text</label>
+      <br />
+      <input type="text" formControlName="labelText" class="form-control" />
+      <br />
+      <label>Label Fill</label>
+      <br />
+      <input type="text" formControlName="labelFill" class="form-control" />
+      <br *ngIf="!isCustomShape" />
+      <label *ngIf="!isCustomShape">Stroke Colour</label>
+      <br *ngIf="!isCustomShape" />
+      <input
+        *ngIf="!isCustomShape"
+        type="text"
+        formControlName="strokeColor"
+        class="form-control"
+      />
+      <br *ngIf="!isCustomShape" />
+      <label *ngIf="!isCustomShape">Fill Colour</label>
+      <br *ngIf="!isCustomShape" />
+      <input
+        *ngIf="!isCustomShape"
+        type="text"
+        formControlName="fillColor"
+        class="form-control"
+      />
+      <br *ngIf="!isCircle" />
+      <label *ngIf="!isCircle">Width</label>
+      <br *ngIf="!isCircle" />
+      <input
+        *ngIf="!isCircle"
+        type="number"
+        formControlName="width"
+        class="form-control"
+      />
+      <br *ngIf="!isCircle" />
+      <label *ngIf="!isCircle">Height</label>
+      <br *ngIf="!isCircle" />
+      <input
+        *ngIf="!isCircle"
+        type="number"
+        formControlName="height"
+        class="form-control"
+      />
+      <br *ngIf="isCircle" />
+      <label *ngIf="isCircle">Radius</label>
+      <br *ngIf="isCircle" />
+      <input
+        *ngIf="isCircle"
+        type="number"
+        formControlName="radius"
+        class="form-control"
+      />
+    </form>
+  </mat-tab>
+  <mat-tab label="Shapes"> Content 2 </mat-tab>
+  <mat-tab label="Third"> Content 3 </mat-tab>
+</mat-tab-group>
