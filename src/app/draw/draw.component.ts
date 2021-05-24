@@ -4,6 +4,7 @@ import * as _ from "underscore";
 import * as $ from "jquery";
 import { ShapeService } from "../services/shape.service";
 import { JointJsService } from "../services/joint-js.service";
+import { CustomElementService } from "../services/custom-element.service";
 
 @Component({
   selector: "app-draw",
@@ -15,9 +16,6 @@ export class DrawComponent implements AfterViewInit {
   public selectedElement: joint.dia.Element = null;
   private graph: joint.dia.Graph;
   private paper: joint.dia.Paper;
-  private rect: joint.shapes.standard.Rectangle;
-  private rect2: joint.shapes.standard.Rectangle;
-  private link: joint.shapes.standard.Link;
 
   private xAxis: number = 15;
   private yAxis: number = 15;
@@ -35,7 +33,8 @@ export class DrawComponent implements AfterViewInit {
   constructor(
     private renderer: Renderer2,
     private shapeService: ShapeService,
-    private jointJsService: JointJsService
+    private jointJsService: JointJsService,
+    private customElementService: CustomElementService
   ) {}
 
   private registerDOMListeners() {
@@ -136,13 +135,6 @@ export class DrawComponent implements AfterViewInit {
       this.graph,
       this.palettePaper
     );
-
-    // let htmlRect = new joint.shapes['html'].Rect({
-    //   position: { x: 80, y: 180 },
-    //   size: { width: 170, height: 100 },
-    // });
-    // htmlRect.attr('label/text', 'Html Rectangle');
-    // htmlRect.addTo(this.graph);
   }
 
   ngAfterViewInit() {
