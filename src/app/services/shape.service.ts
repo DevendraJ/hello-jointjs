@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as joint from "jointjs/dist/joint";
 import * as $ from "jquery";
+import { shapesData } from "./shape-data";
 
 @Injectable({
   providedIn: "root",
@@ -9,41 +10,37 @@ export class ShapeService {
   constructor() {}
 
   private createRectangle(paletteGraph, xAxis, yAxis) {
-    let rectEntry = new joint.shapes.standard.Rectangle();
-    rectEntry.position(xAxis, yAxis);
-    rectEntry.resize(60, 30);
-    rectEntry.attr({
-      body: {
-        fill: "white",
-      },
-    });
-    rectEntry.addTo(paletteGraph);
+    new joint.shapes.standard.Rectangle()
+      .resize(shapesData.shapes.default.width, shapesData.shapes.default.height)
+      .attr(shapesData.shapes.default.attr)
+      .position(xAxis, yAxis)
+      .addTo(paletteGraph);
   }
 
   private createCircle(paletteGraph, xAxis, yAxis) {
-    let circleEntry = new joint.shapes.standard.Circle();
-    circleEntry.position(xAxis, yAxis);
-    circleEntry.resize(60, 30);
-    circleEntry.attr("body/stroke", "rgb(0, 0, 0)");
-    circleEntry.addTo(paletteGraph);
+    new joint.shapes.standard.Circle()
+      .resize(shapesData.shapes.default.width, shapesData.shapes.default.height)
+      .attr(shapesData.shapes.default.attr)
+      .position(xAxis, yAxis)
+      .addTo(paletteGraph);
   }
 
   private createHtmlRect(paletteGraph, xAxis, yAxis) {
-    let htmlRect = new joint.shapes['html'].Rect({
+    let htmlRect = new joint.shapes["html"].Rect({
       position: { x: xAxis, y: yAxis },
       size: { width: 60, height: 30 },
     });
-    htmlRect.attr('label/text', '');
+    htmlRect.attr("label/text", "");
     htmlRect.addTo(paletteGraph);
   }
 
   private createPolygon(paletteGraph, xAxis, yAxis) {
-    let createPolygon = new joint.shapes.standard.Polygon();
-    createPolygon.position(xAxis, yAxis);
-    createPolygon.resize(60, 30);
-    createPolygon.attr("body/stroke", "rgb(0, 0, 0)");
-    createPolygon.attr('body/refPoints', '0,10 10,0 20,10 10,20');
-    createPolygon.addTo(paletteGraph);
+    new joint.shapes.standard.Polygon()
+      .resize(shapesData.shapes.default.width, shapesData.shapes.default.height)
+      .attr(shapesData.shapes.default.attr)
+      .attr("body/refPoints", "0,10 10,0 20,10 10,20")
+      .position(xAxis, yAxis)
+      .addTo(paletteGraph);
   }
 
   public createShapesPanel(paletteGraph, shapesList, axis) {
@@ -71,8 +68,8 @@ export class ShapeService {
           this.createHtmlRect(paletteGraph, xAxis, yAxis);
           break;
         case "polygon":
-            this.createPolygon(paletteGraph, xAxis, yAxis);
-            break;  
+          this.createPolygon(paletteGraph, xAxis, yAxis);
+          break;
       }
     });
   }

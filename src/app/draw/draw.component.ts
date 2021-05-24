@@ -4,6 +4,7 @@ import * as _ from "underscore";
 import * as $ from "jquery";
 import { ShapeService } from "../services/shape.service";
 import { JointJsService } from "../services/joint-js.service";
+import { CustomElementService } from "../services/custom-element.service";
 
 @Component({
   selector: "app-draw",
@@ -15,9 +16,6 @@ export class DrawComponent implements AfterViewInit {
   public selectedElement: joint.dia.Element = null;
   private graph: joint.dia.Graph;
   private paper: joint.dia.Paper;
-  private rect: joint.shapes.standard.Rectangle;
-  private rect2: joint.shapes.standard.Rectangle;
-  private link: joint.shapes.standard.Link;
 
   private xAxis: number = 15;
   private yAxis: number = 15;
@@ -26,7 +24,7 @@ export class DrawComponent implements AfterViewInit {
   private palettePaper: joint.dia.Paper;
 
   private paletteItems = {
-    columns: 1,
+    columns: 3,
     shapes: {
       general: ["rectangle", "circle", "htmlRect", "polygon"],
     },
@@ -35,8 +33,9 @@ export class DrawComponent implements AfterViewInit {
   constructor(
     private renderer: Renderer2,
     private shapeService: ShapeService,
-    private jointJsService: JointJsService
-  ) { }
+    private jointJsService: JointJsService,
+    private customElementService: CustomElementService
+  ) {}
 
   private registerDOMListeners() {
     this.renderer.listen(
@@ -44,9 +43,10 @@ export class DrawComponent implements AfterViewInit {
       "contextmenu",
       (event) => {
         let { top, left } = $("#canvas").offset();
-        let position = new joint.g.Point(event.clientX, event.clientY);
+        let position = new joint.g.Point(event.clientX, event.clientY - 75);
         let elements: joint.dia.Element[] =
           this.graph.findModelsFromPoint(position);
+
         let size = elements.length;
         if (size > 0) {
           this.selectedElement = elements[size - 1];
@@ -66,15 +66,17 @@ export class DrawComponent implements AfterViewInit {
 
   private createPaper(graph) {
     return new joint.dia.Paper({
-      el: "#canvas",
+      el: document.getElementById("canvas"),
       model: graph,
-      width: "100%",
-      height: window.innerHeight,
+      width: "70vw",
+      height: "80vh",
       cellViewNamespace: joint.shapes,
       gridSize: 10,
-      drawGrid: true,
       background: {
-        color: "#rgb(255 255 255)",
+        color: "whitesmoke",
+      },
+      drawGrid: {
+        name: "dot",
       },
     });
   }
@@ -133,13 +135,6 @@ export class DrawComponent implements AfterViewInit {
       this.graph,
       this.palettePaper
     );
-
-    // let htmlRect = new joint.shapes['html'].Rect({
-    //   position: { x: 80, y: 180 },
-    //   size: { width: 170, height: 100 },
-    // });
-    // htmlRect.attr('label/text', 'Html Rectangle');
-    // htmlRect.addTo(this.graph);
   }
 
   ngAfterViewInit() {

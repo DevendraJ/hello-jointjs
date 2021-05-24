@@ -14,7 +14,17 @@ export class PropertiesPanelComponent implements OnInit {
   private isCircle: boolean = false;
   private isCustomShape: boolean = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+    this.panelForm = this.fb.group({
+      labelText: [null, []],
+      labelFill: [null, []],
+      strokeColor: [null, []],
+      fillColor: [null, []],
+      width: [null, []],
+      height: [null, []],
+      radius: [null, []],
+    });
+  }
 
   ngOnInit() {
     this.initializeForm();
@@ -23,7 +33,7 @@ export class PropertiesPanelComponent implements OnInit {
 
   private initializeForm() {
     let type = this.inputElement.get("type");
-    this.isCustomShape = type.split('.')[0] !== 'standard';
+    this.isCustomShape = type.split(".")[0] !== "standard";
 
     let strokeColor = "";
     let fillColor = "";
@@ -32,7 +42,7 @@ export class PropertiesPanelComponent implements OnInit {
       strokeColor = this.inputElement.attributes.attrs.body.stroke;
       fillColor = this.inputElement.attributes.attrs.body.fill;
     }
-    
+
     let labelText: String = "";
     let labelFill = "white";
     let labelAttr = this.inputElement.attributes.attrs["label"];
@@ -44,6 +54,12 @@ export class PropertiesPanelComponent implements OnInit {
     }
 
     let { width, height } = this.inputElement.size();
+    let stroke = null;
+    let fill = null;
+    if (this.inputElement.attributes.attrs.body) {
+      stroke = this.inputElement.attributes.attrs.body.stroke;
+      fill = this.inputElement.attributes.attrs.body.fill;
+    }
 
     this.panelForm = this.fb.group({
       labelText: [labelText],
