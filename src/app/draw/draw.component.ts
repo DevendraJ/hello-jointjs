@@ -143,4 +143,8 @@ export class DrawComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.initializeCanvas();
   }
+
+  extractGraphJSON() {
+    console.log(JSON.stringify(this.graph.toJSON()));
+  }
 }
