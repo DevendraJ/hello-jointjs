@@ -24,7 +24,7 @@ export class DrawComponent implements AfterViewInit {
   private palettePaper: joint.dia.Paper;
 
   private paletteItems = {
-    columns: 3,
+    columns: 1,
     shapes: {
       general: ["rectangle", "circle", "polygon", "custom"],
       // general: ["customRect"],

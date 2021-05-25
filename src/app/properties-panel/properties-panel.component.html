@@ -1,11 +1,24 @@
-<mat-tab-group>
+<mat-tab-group animationDuration="0ms">
+  <mat-tab label="Properties">
+    <br>
+    <form [formGroup]="propsForm">
+      <label>Label</label>
+      <br />
+      <input type="text" formControlName="shapeLabel" class="form-control" />
+      <br />
+      <label>Mail From</label>
+      <br />
+      <input type="text" formControlName="mailFrom" class="form-control" />
+      <br />
+      <label>Mail To</label>
+      <br />
+      <input type="text" formControlName="mailTo" class="form-control" />
+      <br />
+    </form>
+  </mat-tab>
   <mat-tab label="Styles">
-    <form [formGroup]="panelForm">
-      <p>Properties Panel</p>
-      <label>Label Text</label>
-      <br />
-      <input type="text" formControlName="labelText" class="form-control" />
-      <br />
+    <br>
+    <form [formGroup]="stylesForm">
       <label>Label Fill</label>
       <br />
       <input type="text" formControlName="labelFill" class="form-control" />
@@ -56,6 +69,4 @@
       />
     </form>
   </mat-tab>
-  <mat-tab label="Shapes"> Content 2 </mat-tab>
-  <mat-tab label="Third"> Content 3 </mat-tab>
 </mat-tab-group>

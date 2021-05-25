@@ -10,20 +10,13 @@ export class PropertiesPanelComponent implements OnInit {
   @Input()
   private inputElement: joint.dia.Element;
 
-  public panelForm: FormGroup;
+  public stylesForm: FormGroup;
+  public propsForm: FormGroup;
+
   private isCircle: boolean = false;
   private isCustomShape: boolean = false;
 
-  constructor(private fb: FormBuilder) {
-    this.panelForm = this.fb.group({
-      labelText: [null, []],
-      labelFill: [null, []],
-      strokeColor: [null, []],
-      fillColor: [null, []],
-      width: [null, []],
-      height: [null, []],
-      radius: [null, []],
-    });
+  constructor(private fb: FormBuilder) {    
   }
 
   ngOnInit() {
@@ -43,12 +36,19 @@ export class PropertiesPanelComponent implements OnInit {
       fillColor = this.inputElement.attributes.attrs.body.fill;
     }
 
-    let labelText: String = "";
+    let shapeLabel: String = this.inputElement.get("shapeLabel");
+    let mailFrom: String = this.inputElement.get("mailFrom");
+    let mailTo: String = this.inputElement.get("mailTo");
+
+    this.propsForm = this.fb.group({
+      shapeLabel: [shapeLabel],
+      mailFrom: [mailFrom],
+      mailTo: [mailTo]
+    });
+
     let labelFill = "white";
-    let labelAttr = this.inputElement.attributes.attrs["label"];
-    if (labelAttr && labelAttr["text"]) {
-      labelText = labelAttr["text"];
-    }
+    let labelAttr: String = this.inputElement.get("shapeLabel");
+    
     if (labelAttr && labelAttr["fill"]) {
       labelFill = labelAttr["fill"];
     }
@@ -61,8 +61,7 @@ export class PropertiesPanelComponent implements OnInit {
       fill = this.inputElement.attributes.attrs.body.fill;
     }
 
-    this.panelForm = this.fb.group({
-      labelText: [labelText],
+    this.stylesForm = this.fb.group({
       labelFill: [labelFill],
       strokeColor: [strokeColor],
       fillColor: [fillColor],
@@ -70,36 +69,45 @@ export class PropertiesPanelComponent implements OnInit {
       height: [height],
       radius: [width / 2],
     });
+    
   }
 
   subscribeChanges() {
-    this.panelForm.get("labelText").valueChanges.subscribe((val) => {
-      this.inputElement.attr("label/text", val);
+    this.propsForm.get("shapeLabel").valueChanges.subscribe((val) => {
+      this.inputElement.set("shapeLabel", val);
     });
 
-    this.panelForm.get("labelFill").valueChanges.subscribe((val) => {
+    this.propsForm.get("mailFrom").valueChanges.subscribe((val) => {
+      this.inputElement.set("mailFrom", val);
+    });
+
+    this.propsForm.get("mailTo").valueChanges.subscribe((val) => {
+      this.inputElement.set("MailTo", val);
+    });
+
+    this.stylesForm.get("labelFill").valueChanges.subscribe((val) => {
       this.inputElement.attr("label/fill", val);
     });
 
-    this.panelForm.get("strokeColor").valueChanges.subscribe((val) => {
+    this.stylesForm.get("strokeColor").valueChanges.subscribe((val) => {
       this.inputElement.attr("body/stroke", val);
     });
 
-    this.panelForm.get("fillColor").valueChanges.subscribe((val) => {
+    this.stylesForm.get("fillColor").valueChanges.subscribe((val) => {
       this.inputElement.attr("body/fill", val);
     });
 
-    this.panelForm.get("width").valueChanges.subscribe((val) => {
+    this.stylesForm.get("width").valueChanges.subscribe((val) => {
       let { height } = this.inputElement.size();
       this.inputElement.resize(val, height);
     });
 
-    this.panelForm.get("height").valueChanges.subscribe((val) => {
+    this.stylesForm.get("height").valueChanges.subscribe((val) => {
       let { width } = this.inputElement.size();
       this.inputElement.resize(width, val);
     });
 
-    this.panelForm.get("radius").valueChanges.subscribe((val) => {
+    this.stylesForm.get("radius").valueChanges.subscribe((val) => {
       this.inputElement.resize(val * 2, val * 2);
     });
   }
