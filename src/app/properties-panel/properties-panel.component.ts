@@ -46,13 +46,6 @@ export class PropertiesPanelComponent implements OnInit {
       mailTo: [mailTo]
     });
 
-    let labelFill = "white";
-    let labelAttr: String = this.inputElement.get("shapeLabel");
-    
-    if (labelAttr && labelAttr["fill"]) {
-      labelFill = labelAttr["fill"];
-    }
-
     let { width, height } = this.inputElement.size();
     let stroke = null;
     let fill = null;
@@ -62,7 +55,6 @@ export class PropertiesPanelComponent implements OnInit {
     }
 
     this.stylesForm = this.fb.group({
-      labelFill: [labelFill],
       strokeColor: [strokeColor],
       fillColor: [fillColor],
       width: [width],
@@ -83,10 +75,6 @@ export class PropertiesPanelComponent implements OnInit {
 
     this.propsForm.get("mailTo").valueChanges.subscribe((val) => {
       this.inputElement.set("mailTo", val);
-    });
-
-    this.stylesForm.get("labelFill").valueChanges.subscribe((val) => {
-      this.inputElement.attr("label/fill", val);
     });
 
     this.stylesForm.get("strokeColor").valueChanges.subscribe((val) => {

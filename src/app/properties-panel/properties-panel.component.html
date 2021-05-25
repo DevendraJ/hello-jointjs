@@ -19,10 +19,6 @@
   <mat-tab label="Styles">
     <br>
     <form [formGroup]="stylesForm">
-      <label>Label Fill</label>
-      <br />
-      <input type="text" formControlName="labelFill" class="form-control" />
-      <br *ngIf="!isCustomShape" />
       <label *ngIf="!isCustomShape">Stroke Colour</label>
       <br *ngIf="!isCustomShape" />
       <input
