@@ -82,7 +82,7 @@ export class PropertiesPanelComponent implements OnInit {
     });
 
     this.propsForm.get("mailTo").valueChanges.subscribe((val) => {
-      this.inputElement.set("MailTo", val);
+      this.inputElement.set("mailTo", val);
     });
 
     this.stylesForm.get("labelFill").valueChanges.subscribe((val) => {

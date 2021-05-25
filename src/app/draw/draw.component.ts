@@ -69,7 +69,7 @@ export class DrawComponent implements AfterViewInit {
     return new joint.dia.Paper({
       el: document.getElementById("canvas"),
       model: graph,
-      width: "70vw",
+      width: "100%",
       height: "80vh",
       cellViewNamespace: joint.shapes,
       gridSize: 10,
