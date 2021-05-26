@@ -54,7 +54,7 @@ export class ShapeService {
     paletteGraph.addCells([element]);
   }
 
-  public createShapesPanel(paletteGraph, shapesList, axis) {
+  public populatePalettePaper(paletteGraph, shapesList, axis) {
     var columns = shapesList.columns;
     shapesList.shapes.general.forEach((item, index) => {
       var xAxis = 0;
@@ -89,6 +89,8 @@ export class ShapeService {
   }
 
   public registerPalettePaperEvents(paper, graph, palettePaper) {
+    let cloneAndResize = this.cloneAndResize;
+
     palettePaper.on("cell:pointerdown", function (cellView, e, x, y) {
       $("body").append(
         '<div id="flyPaper" style="position:fixed;z-index:100;opacity:.7;pointer-event:none;"></div>'
@@ -99,7 +101,7 @@ export class ShapeService {
         model: flyGraph,
         interactive: false,
       });
-      let flyShape = cellView.model.clone();
+      let flyShape = cloneAndResize(cellView.model);
       let pos = cellView.model.position();
       let offset = {
         x: x - pos.x,
@@ -129,9 +131,9 @@ export class ShapeService {
           y > target.top &&
           y < target.top + paper.$el.height()
         ) {
-          let s = flyShape.clone();
-          s.position(x - target.left - offset.x, y - target.top - offset.y);
-          graph.addCell(s);
+          let newCell = flyShape.clone();
+          newCell.position(x - target.left - offset.x, y - target.top - offset.y);
+          graph.addCell(newCell);
         }
 
         $("body").off("mousemove.fly").off("mouseup.fly");
@@ -141,6 +143,17 @@ export class ShapeService {
     });
   }
 
+  private cloneAndResize(element) {
+    let newElement = element.clone();
+    let type:String = newElement.get('type');
+    if(type != 'standard.Circle') {
+      newElement.resize(90, 50);
+    } else {
+      newElement.resize(50, 50);
+    }
+    return newElement;
+  }
+ 
   public registerPaperListeners(paper) {
     paper.on({
       "link:pointermove": function (elementView, evt, x, y) {

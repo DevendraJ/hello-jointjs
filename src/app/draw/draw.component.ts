@@ -122,11 +122,11 @@ export class DrawComponent implements AfterViewInit {
 
     this.graph = this.createGraph();
     this.paper = this.createPaper(this.graph);
+    this.shapeService.registerPaperListeners(this.paper);
     this.paletteGraph = this.createPaletteGraph();
     this.palettePaper = this.createPalettePaper(this.paletteGraph);
-    this.shapeService.registerPaperListeners(this.paper);
 
-    this.shapeService.createShapesPanel(this.paletteGraph, this.paletteItems, {
+    this.shapeService.populatePalettePaper(this.paletteGraph, this.paletteItems, {
       xAxis: this.xAxis,
       yAxis: this.yAxis,
     });
@@ -137,7 +137,6 @@ export class DrawComponent implements AfterViewInit {
       this.palettePaper
     );
     this.shapeService.customRectangle(this.graph, 180, 180);
-    this.shapeService.customRectangle(this.graph, 280, 280);
   }
 
   ngAfterViewInit() {
