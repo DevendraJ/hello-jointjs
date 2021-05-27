@@ -74,7 +74,7 @@ export class DrawComponent implements AfterViewInit {
       cellViewNamespace: joint.shapes,
       gridSize: 10,
       background: {
-        color: "whitesmoke",
+        // color: "whitesmoke",
       },
       drawGrid: {
         name: "dot",
@@ -110,7 +110,7 @@ export class DrawComponent implements AfterViewInit {
       gridSize: 10,
       drawGrid: true,
       background: {
-        color: "whitesmoke",
+        color: "#dadadac",
       },
       interactive: false,
     });

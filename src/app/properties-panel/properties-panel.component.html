@@ -36,7 +36,7 @@
         formControlName="fillColor"
         class="form-control"
       />
-      <br *ngIf="!isCircle" />
+      <br *ngIf="!isCustomShape" />
       <label *ngIf="!isCircle">Width</label>
       <br *ngIf="!isCircle" />
       <input
@@ -63,6 +63,7 @@
         formControlName="radius"
         class="form-control"
       />
+      <br>
     </form>
   </mat-tab>
 </mat-tab-group>
