@@ -1,0 +1,17 @@
+#palette-wrapper {
+  height: 400px;
+  border: 1px solid;
+  width: 10%;
+  background-color: #ddd;
+  position: fixed;
+  z-index: 999;
+  top: 80px;
+}
+
+.rectangle {
+  height: 50px;
+  border: 1px solid;
+  width: 50px;
+  background-color: white;
+  margin: 10px;
+}

@@ -1,17 +1,21 @@
-import { Component, AfterViewInit, Renderer2 } from "@angular/core";
+import {
+  Component,
+  AfterViewInit,
+  Renderer2,
+  ChangeDetectorRef,
+} from "@angular/core";
 import * as joint from "jointjs/dist/joint";
 import * as _ from "underscore";
 import * as $ from "jquery";
-import { ShapeService } from "../services/shape.service";
-import { JointJsService } from "../services/joint-js.service";
-import { CustomElementService } from "../services/custom-element.service";
+import { ShapeService } from "src/app/services/shape.service";
+import { JointJsService } from "src/app/services/joint-js.service";
 
 @Component({
-  selector: "app-draw",
-  templateUrl: "./draw.component.html",
-  styleUrls: ["./draw.component.css"],
+  selector: "app-flow-chart-wrapper",
+  templateUrl: "./flow-chart-wrapper.component.html",
+  styleUrls: ["./flow-chart-wrapper.component.css"],
 })
-export class DrawComponent implements AfterViewInit {
+export class FlowChartWrapperComponent implements AfterViewInit {
   public showProps: Boolean = false;
   public selectedElement: joint.dia.Element = null;
   private graph: joint.dia.Graph;
@@ -20,14 +24,10 @@ export class DrawComponent implements AfterViewInit {
   private xAxis: number = 15;
   private yAxis: number = 15;
 
-  private paletteGraph: joint.dia.Graph;
-  private palettePaper: joint.dia.Paper;
-
   private paletteItems = {
     columns: 1,
     shapes: {
-      general: ["rectangle", "circle", "polygon", "custom"],
-      // general: ["customRect"],
+      general: ["rectangle", "circle", "polygon", "customRect"],
     },
   };
 
@@ -35,7 +35,7 @@ export class DrawComponent implements AfterViewInit {
     private renderer: Renderer2,
     private shapeService: ShapeService,
     private jointJsService: JointJsService,
-    private customElementService: CustomElementService
+    private cdr: ChangeDetectorRef
   ) {}
 
   private registerDOMListeners() {
@@ -91,31 +91,6 @@ export class DrawComponent implements AfterViewInit {
     );
   }
 
-  private createPaletteGraph() {
-    return new joint.dia.Graph(
-      {},
-      {
-        cellNamespace: joint.shapes,
-      }
-    );
-  }
-
-  private createPalettePaper(paletteGraph) {
-    return new joint.dia.Paper({
-      el: "#palette",
-      model: paletteGraph,
-      width: this.xAxis + this.paletteItems.columns * 80,
-      height: (window.innerHeight * 3) / 4,
-      cellViewNamespace: joint.shapes,
-      gridSize: 10,
-      drawGrid: true,
-      background: {
-        color: "#dadadac",
-      },
-      interactive: false,
-    });
-  }
-
   initializeCanvas() {
     this.registerDOMListeners();
     this.jointJsService.customizeJoint();
@@ -123,24 +98,23 @@ export class DrawComponent implements AfterViewInit {
     this.graph = this.createGraph();
     this.paper = this.createPaper(this.graph);
     this.shapeService.registerPaperListeners(this.paper);
-    this.paletteGraph = this.createPaletteGraph();
-    this.palettePaper = this.createPalettePaper(this.paletteGraph);
-
-    this.shapeService.populatePalettePaper(this.paletteGraph, this.paletteItems, {
-      xAxis: this.xAxis,
-      yAxis: this.yAxis,
-    });
-
-    this.shapeService.registerPalettePaperEvents(
-      this.paper,
-      this.graph,
-      this.palettePaper
-    );
-    this.shapeService.customRectangle(this.graph, 180, 180);
   }
+
+  public create() {
+    var element = document.getElementById("rectangle");
+    if (element) {
+      this.shapeService.populatePalettePaper(this.graph, this.paletteItems, {
+        xAxis: 300,
+        yAxis: 300,
+      });
+    }
+  }
+
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.initializeCanvas();
+    this.cdr.detectChanges();
   }
 
   extractGraphJSON() {

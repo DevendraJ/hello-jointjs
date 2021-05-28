@@ -4,8 +4,7 @@ import { CommonModule } from "@angular/common";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { DrawComponent } from "./draw/draw.component";
-import { PropertiesPanelComponent } from "./properties-panel/properties-panel.component";
+import { PropertiesPanelComponent } from "./components/properties-panel/properties-panel.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 // Material Form Controls
@@ -51,9 +50,28 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { CircleComponent } from "./components/template/circle/circle.component";
+import { RectangleComponent } from "./components/template/rectangle/rectangle.component";
+import { PolygonComponent } from "./components/template/polygon/polygon.component";
+import { CustomShapeComponent } from "./components/template/custom-shape/custom-shape.component";
+import { CanvasComponent } from "./components/canvas/canvas.component";
+import { PaletteComponent } from "./components/palette/palette.component";
+import { PreviewComponent } from "./components/preview/preview.component";
+import { FlowChartWrapperComponent } from "./components/flow-chart-wrapper/flow-chart-wrapper.component";
 
 @NgModule({
-  declarations: [AppComponent, DrawComponent, PropertiesPanelComponent],
+  declarations: [
+    AppComponent,
+    PropertiesPanelComponent,
+    CircleComponent,
+    RectangleComponent,
+    PolygonComponent,
+    CustomShapeComponent,
+    CanvasComponent,
+    PaletteComponent,
+    PreviewComponent,
+    FlowChartWrapperComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

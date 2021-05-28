@@ -1,0 +1,15 @@
+.draw-component {
+  margin: 15px;
+}
+
+.properties-panel {
+  position: absolute;
+  right: 15px;
+  top: 80px;
+  padding: 10px;
+  z-index: 9999;
+  border: 1px solid #dcdcdc;
+  background-color: #dadada;
+  border-radius: 5px;
+  opacity: 1;
+}
