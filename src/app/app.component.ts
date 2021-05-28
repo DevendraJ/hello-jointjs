@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, ViewChild } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import { FlowChartWrapperComponent } from "./components/flow-chart-wrapper/flow-chart-wrapper.component";
 
 @Component({
   selector: "app-root",
@@ -12,11 +13,11 @@ export class AppComponent {
   @ViewChild(RouterOutlet, { static: false })
   private routerOutlet: RouterOutlet;
 
-  // extractGraphJSON() {
-  //   if (this.routerOutlet && this.routerOutlet.component) {
-  //     if (this.routerOutlet.component instanceof DrawComponent) {
-  //       (this.routerOutlet.component as DrawComponent).extractGraphJSON();
-  //     }
-  //   }
-  // }
+  extractGraphJSON() {
+    if (this.routerOutlet && this.routerOutlet.component) {
+      if (this.routerOutlet.component instanceof FlowChartWrapperComponent) {
+        (this.routerOutlet.component as FlowChartWrapperComponent).extractGraphJSON();
+      }
+    }
+  }
 }

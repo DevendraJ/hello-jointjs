@@ -13,8 +13,8 @@ export class PropertiesPanelComponent implements OnInit {
   public stylesForm: FormGroup;
   public propsForm: FormGroup;
 
-  private isCircle: boolean = false;
-  private isCustomShape: boolean = false;
+  public isCircle: boolean = false;
+  public isCustomShape: boolean = false;
 
   constructor(private fb: FormBuilder) {    
   }

@@ -18,7 +18,7 @@ import { JointJsService } from "src/app/services/joint-js.service";
 export class FlowChartWrapperComponent implements AfterViewInit {
   public showProps: Boolean = false;
   public selectedElement: joint.dia.Element = null;
-  private graph: joint.dia.Graph;
+  public graph: joint.dia.Graph;
   private paper: joint.dia.Paper;
 
   private xAxis: number = 15;
