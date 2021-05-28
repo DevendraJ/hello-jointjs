@@ -1,6 +1,6 @@
 <div class="draw-component">
-  <div #palette class="palette" id="palette" ></div>
-  <div #canvas class="canvas" id="canvas"></div>
+  <app-palette *ngIf="graph" [graph]="graph"></app-palette>
+  <app-canvas></app-canvas>
   <app-properties-panel
     class="properties-panel"
     *ngIf="showProps"

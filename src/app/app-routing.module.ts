@@ -1,11 +1,11 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { DrawComponent } from "./draw/draw.component";
+import { FlowChartWrapperComponent } from "./components/flow-chart-wrapper/flow-chart-wrapper.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: DrawComponent,
+    component: FlowChartWrapperComponent,
   },
 ];
 

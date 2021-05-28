@@ -44,48 +44,82 @@ export class ShapeService {
       .addTo(paletteGraph);
   }
 
-  public customRectangle(paletteGraph, xAxis, yAxis) {
+  private customRectangle(paletteGraph, xAxis, yAxis) {
     var element = new joint.shapes["html"].Element({
-      position: { x: xAxis, y: yAxis },
-      size: { width: 170, height: 100 },
       label: "I am HTML",
       select: "one",
+    })
+      .resize(170, 100)
+      .attr(shapesData.shapes.default.attr)
+      .position(xAxis, yAxis);
+    paletteGraph.addCells([element]);
+  }
+
+  private emailRect(paletteGraph, xAxis, yAxis) {
+    var element = new joint.shapes["html"].Email({
+      position: { x: xAxis, y: yAxis },
+      size: { width: 60, height: 100 },
     });
     paletteGraph.addCells([element]);
   }
 
   public populatePalettePaper(paletteGraph, shapesList, axis) {
-    var columns = shapesList.columns;
-    shapesList.shapes.general.forEach((item, index) => {
-      var xAxis = 0;
-      var yAxis = axis.yAxis + Math.floor(index / columns) * 60;
+    var xAxis = axis.xAxis;
+    var yAxis = axis.yAxis;
+    switch (shapesList[0]) {
+      case "rectangle":
+        this.createRectangle(paletteGraph, xAxis, yAxis);
+        break;
+      case "circle":
+        this.createCircle(paletteGraph, xAxis, yAxis);
+        break;
+      case "htmlRect":
+        this.createHtmlRect(paletteGraph, xAxis, yAxis);
+        break;
+      case "polygon":
+        this.createPolygon(paletteGraph, xAxis, yAxis);
+        break;
+      case "customRect":
+        this.customRectangle(paletteGraph, xAxis, yAxis);
+        break;
+      case "emailRect":
+        this.emailRect(paletteGraph, xAxis, yAxis);
+        break;
+    }
+    // var columns = shapesList.columns;
+    // shapesList.shapes.general.forEach((item, index) => {
+    //   var xAxis = 0;
+    //   var yAxis = axis.yAxis + Math.floor(index / columns) * 60;
 
-      var count = index % columns;
+    //   var count = index % columns;
 
-      if (count) {
-        xAxis = axis.xAxis + count * 60;
-      } else {
-        xAxis = axis.xAxis;
-      }
+    //   if (count) {
+    //     xAxis = axis.xAxis + count * 60;
+    //   } else {
+    //     xAxis = axis.xAxis;
+    //   }
 
-      switch (item) {
-        case "rectangle":
-          this.createRectangle(paletteGraph, xAxis, yAxis);
-          break;
-        case "circle":
-          this.createCircle(paletteGraph, xAxis, yAxis);
-          break;
-        case "htmlRect":
-          this.createHtmlRect(paletteGraph, xAxis, yAxis);
-          break;
-        case "polygon":
-          this.createPolygon(paletteGraph, xAxis, yAxis);
-          break;
-        case "customRect":
-          this.customRectangle(paletteGraph, xAxis, yAxis);
-          break;
-      }
-    });
+    //   switch (item) {
+    //     case "rectangle":
+    //       this.createRectangle(paletteGraph, xAxis, yAxis);
+    //       break;
+    //     case "circle":
+    //       this.createCircle(paletteGraph, xAxis, yAxis);
+    //       break;
+    //     case "htmlRect":
+    //       this.createHtmlRect(paletteGraph, xAxis, yAxis);
+    //       break;
+    //     case "polygon":
+    //       this.createPolygon(paletteGraph, xAxis, yAxis);
+    //       break;
+    //     case "customRect":
+    //       this.customRectangle(paletteGraph, xAxis, yAxis);
+    //       break;
+    //     case "emailRect":
+    //       this.emailRect(paletteGraph, xAxis, yAxis);
+    //       break;
+    //   }
+    // });
   }
 
   public registerPalettePaperEvents(paper, graph, palettePaper) {
@@ -132,7 +166,10 @@ export class ShapeService {
           y < target.top + paper.$el.height()
         ) {
           let newCell = flyShape.clone();
-          newCell.position(x - target.left - offset.x, y - target.top - offset.y);
+          newCell.position(
+            x - target.left - offset.x,
+            y - target.top - offset.y
+          );
           graph.addCell(newCell);
         }
 
@@ -145,15 +182,15 @@ export class ShapeService {
 
   private cloneAndResize(element) {
     let newElement = element.clone();
-    let type:String = newElement.get('type');
-    if(type != 'standard.Circle') {
+    let type: String = newElement.get("type");
+    if (type != "standard.Circle") {
       newElement.resize(90, 50);
     } else {
       newElement.resize(50, 50);
     }
     return newElement;
   }
- 
+
   public registerPaperListeners(paper) {
     paper.on({
       "link:pointermove": function (elementView, evt, x, y) {
